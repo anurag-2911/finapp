@@ -28,14 +28,18 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Build the Docker image
+      # Build and push the Docker image
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: ./  
+          context: ./  # Path to your Dockerfile and context
           push: true
-          tags: anurag2911/finapp:latest  
+          tags: anurag2911/finapp:latest  # Replace with your DockerHub ID and image name
 
-      # Verify that the image was pushed to Docker Hub
-      - name: Docker Hub image info
-        run: docker image inspect anurag2911/finapp:latest
+      # Pull the image to verify that it was successfully pushed to Docker Hub
+      - name: Pull Docker image from Docker Hub
+        run: docker pull anurag2911/finapp:latest
+
+      # list Docker images to ensure it's available
+      - name: List Docker images
+        run: docker images
