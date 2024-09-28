@@ -32,9 +32,9 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: ./frontend  # Path to your frontend project (React app)
+          context: ./  
           push: true
-          tags: anurag2911/finapp:latest  # Replace with your DockerHub ID and image name
+          tags: anurag2911/finapp:latest  
 
       # Verify that the image was pushed to Docker Hub
       - name: Docker Hub image info
