@@ -18,7 +18,7 @@ spec:
         - name: finapp-container
           image: anurag2911/finapp:latest  
           ports:
-            - containerPort: 80  # Exposing port 80 since Nginx serves on this port
+            - containerPort: 80  
           resources:
             limits:
               memory: "512Mi"
