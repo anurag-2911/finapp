@@ -34,12 +34,12 @@ analyticsApi.interceptors.request.use((config) => {
 });
 
 // Auth API calls
-export const login = async (email, password) => {
-  return await authApi.post('/login', { email, password });
+export const login = async (username, password) => {
+  return await authApi.post('/login', { username, password });
 };
 
-export const signup = async (email, password) => {
-  return await authApi.post('/signup', { email, password });
+export const signup = async (username, password) => {
+  return await authApi.post('/signup', { username, password });
 };
 
 // Finance API calls
