@@ -37,7 +37,7 @@ function Signup() {
       // Allow login after successful signup
       setTimeout(() => {
         navigate('/login');
-      }, 10000); // Redirect to login after 10 seconds
+      }, 5000); // Redirect to login after 5 seconds
     } catch (err) {
       // Display error message returned from the backend
       if (err.response && err.response.data && err.response.data.detail) {
