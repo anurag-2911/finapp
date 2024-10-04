@@ -3,15 +3,15 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import { login } from '../api/apiService'; 
 
 function Login() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Login attempt:', { email, password });  // Log the form data being sent
+    console.log('Login attempt:', { username, password });  // Log the form data being sent
     try {
-      const response = await login(email, password); 
+      const response = await login(username, password); 
       console.log('Response received from backend:', response);  // Log the response from the server
       // Store the token in localStorage or state
       localStorage.setItem('token', response.data.access_token);
@@ -31,10 +31,10 @@ function Login() {
       {error && <Typography color="error">{error}</Typography>}
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Email"
+          label="Username"
           variant="outlined"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           sx={{ mb: 2, width: '100%' }}
         />
         <TextField

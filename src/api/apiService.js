@@ -37,10 +37,6 @@ const notificationApi = axios.create({
     baseURL: config.notificationService,
 });
 
-
-
-
-
 export const signup = async (email, password) => {
     return await authApi.post('/signup', { email, password });
 };
