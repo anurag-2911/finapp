@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: finapp-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: / # Rewrite the target path to root
+    cert-manager.io/cluster-issuer: letsencrypt-prod  
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: appsyxzabc.com  
+      http:
+        paths:
+          - path: /            # Frontend React App
+            pathType: Prefix
+            backend:
+              service:
+                name: finapp-service
+                port:
+                  number: 80
+          - path: /auth-service/  # Auth Service Backend
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 8001
+          - path: /finance-service/  # Finance Service Backend
+            pathType: Prefix
+            backend:
+              service:
+                name: finance-service
+                port:
+                  number: 8002
+          - path: /analytics-service/  # Analytics Service Backend
+            pathType: Prefix
+            backend:
+              service:
+                name: analytics-service
+                port:
+                  number: 8004
+  tls:
+    - hosts:
+        - appsyxzabc.com  
+      secretName: tls-secret
