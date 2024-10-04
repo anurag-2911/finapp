@@ -9,8 +9,10 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log('Login attempt:', { email, password });  // Log the form data being sent
     try {
       const response = await login(email, password); 
+      console.log('Response received from backend:', response);  // Log the response from the server
       // Store the token in localStorage or state
       localStorage.setItem('token', response.data.access_token);
       console.log('Login successful:', response.data);
