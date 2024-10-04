@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; // For redirecting after login
 import { login } from '../api/apiService'; 
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const navigate = useNavigate(); // For navigation
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Login attempt:', { username, password });  // Log the form data being sent
     try {
-      const response = await login(username, password); 
-      console.log('Response received from backend:', response);  // Log the response from the server
-      // Store the token in localStorage or state
-      localStorage.setItem('token', response.data.access_token);
-      console.log('Login successful:', response.data);
+      const response = await login(username, password);
+      const token = response.data.access_token;
+      
+      // Store the token in localStorage or sessionStorage
+      localStorage.setItem('token', token);
+      
+      // Redirect to the dashboard after successful login
+      navigate('/dashboard'); 
+
       setError(null);
     } catch (err) {
       console.error('Login error:', err);
