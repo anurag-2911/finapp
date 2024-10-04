@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { TextField, Button, Box, Typography } from '@mui/material';
+import axios from 'axios';
 
 const FinancingApplication = () => {
   const formik = useFormik({
@@ -13,9 +14,18 @@ const FinancingApplication = () => {
       amount: Yup.number().required('Required'),
       purpose: Yup.string().required('Required'),
     }),
-    onSubmit: (values) => {
-      // Mock API call
-      console.log('Financing Application Data:', values);
+    onSubmit: async (values) => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await axios.post('http://<BACKEND_API_URL>/apply-finance', values, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log('Financing application submitted:', response.data);
+      } catch (err) {
+        console.error('Error submitting application:', err);
+      }
     },
   });
 

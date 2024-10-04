@@ -1,7 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography, Box, Card, CardContent, Grid } from '@mui/material';
+import axios from 'axios';
 
 const Dashboard = () => {
+  const [dashboardData, setDashboardData] = useState(null);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await axios.get('http://<BACKEND_API_URL>/dashboard', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setDashboardData(response.data);
+      } catch (err) {
+        console.error('Error fetching dashboard data:', err);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" gutterBottom>
@@ -12,7 +33,9 @@ const Dashboard = () => {
           <Card>
             <CardContent>
               <Typography variant="h5">Account Balance</Typography>
-              <Typography variant="body1">$5,000</Typography>
+              <Typography variant="body1">
+                ${dashboardData ? dashboardData.balance : 'Loading...'}
+              </Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -20,7 +43,9 @@ const Dashboard = () => {
           <Card>
             <CardContent>
               <Typography variant="h5">Pending Applications</Typography>
-              <Typography variant="body1">2 Applications</Typography>
+              <Typography variant="body1">
+                {dashboardData ? `${dashboardData.pendingApplications} Applications` : 'Loading...'}
+              </Typography>
             </CardContent>
           </Card>
         </Grid>
