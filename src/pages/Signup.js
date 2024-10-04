@@ -1,30 +1,50 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField, Typography } from '@mui/material';
-import axios from 'axios';
+import { Box, Button, TextField, Typography, Alert } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; // For redirecting after successful signup
+import { signup } from '../api/apiService'; // API call for signup
 
 function Signup() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // Store error messages
+  const [success, setSuccess] = useState(null); // Store success messages
+  const navigate = useNavigate(); // For navigation
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Clear previous messages
+    setError(null);
+    setSuccess(null);
+
+    // Validate form inputs
+    if (!username || !password || !confirmPassword) {
+      setError('Please fill in all fields');
+      return;
+    }
+
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      setError('Passwords do not match');
       return;
     }
 
     try {
-      const response = await axios.post('http://<BACKEND_API_URL>/signup', {
-        username: email,
-        password: password,
-      });
-      console.log('Signup successful:', response.data);
-      setError(null);
+      // Call the signup API
+      const response = await signup(username, password);
+      setSuccess('Signup successful! You can now log in.');
+      
+      // Allow login after successful signup
+      setTimeout(() => {
+        navigate('/login');
+      }, 10000); // Redirect to login after 10 seconds
     } catch (err) {
-      console.error('Signup error:', err);
-      setError('Error creating account');
+      // Display error message returned from the backend
+      if (err.response && err.response.data && err.response.data.detail) {
+        setError(err.response.data.detail);
+      } else {
+        setError('Error creating account. Please try again.');
+      }
     }
   };
 
@@ -33,13 +53,16 @@ function Signup() {
       <Typography variant="h4" gutterBottom>
         Sign Up
       </Typography>
-      {error && <Typography color="error">{error}</Typography>}
+      
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+      
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Email"
+          label="Username"
           variant="outlined"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           sx={{ mb: 2, width: '100%' }}
         />
         <TextField
