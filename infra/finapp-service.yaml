@@ -28,7 +28,7 @@ spec:
               cpu: "250m"
           env:             
             - name: REACT_APP_BACKEND_URL
-              value: "http://appsxyzabc.com" # TODO: change when domain name resolution issue is fixed
+              value: "http://appsxyzabc.com" 
 
 ---
 apiVersion: v1
