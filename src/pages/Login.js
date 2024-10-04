@@ -1,14 +1,32 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; // For redirecting after login
+import { login } from '../api/apiService'; 
 
 function Login() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const navigate = useNavigate(); // For navigation
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle login logic here
-    console.log('Login with:', { email, password });
+    try {
+      const response = await login(username, password);
+      const token = response.data.access_token;
+      
+      // Store the token in localStorage or sessionStorage
+      localStorage.setItem('token', token);
+      
+      // Redirect to the dashboard after successful login
+      console.log('Login successful, navigating to dashboard');
+      navigate('/dashboard'); 
+
+      setError(null);
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('Invalid credentials');
+    }
   };
 
   return (
@@ -16,12 +34,13 @@ function Login() {
       <Typography variant="h4" gutterBottom>
         Login
       </Typography>
+      {error && <Typography color="error">{error}</Typography>}
       <form onSubmit={handleSubmit}>
         <TextField
-          label="Email"
+          label="Username"
           variant="outlined"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           sx={{ mb: 2, width: '100%' }}
         />
         <TextField

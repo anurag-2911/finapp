@@ -8,7 +8,7 @@ const Home = () => {
         Welcome to the Finance Application
       </Typography>
       <Typography variant="body1">
-        This is a demo finance application where users can apply for financing, view options, and manage their financial dashboard.
+        This is a finance application where users can apply for financing, view options, and manage their financial dashboard.
       </Typography>
     </Box>
   );
