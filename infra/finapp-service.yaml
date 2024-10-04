@@ -26,20 +26,11 @@ spec:
             requests:
               memory: "256Mi"
               cpu: "250m"
-            env:
-            - name: REACT_APP_AUTH_SERVICE_URL
-              value: "http://auth-service:8001"
-            - name: REACT_APP_FINANCE_SERVICE_URL
-              value: "http://finance-service:8002"
-            - name: REACT_APP_NOTIFICATION_SERVICE_URL
-              value: "http://notification-service:8003"
-            - name: REACT_APP_ANALYTICS_SERVICE_URL
-              value: "http://analytics-service:8004"
+          env:             
             - name: REACT_APP_BACKEND_URL
               value: "http://172.232.101.246" # TODO: change when domain name resolution issue is fixed
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -51,4 +42,4 @@ spec:
     - protocol: TCP
       port: 80  # Exposing the port used by the container
       targetPort: 80
-  type: ClusterIP  
+  type: ClusterIP

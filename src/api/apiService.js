@@ -1,6 +1,6 @@
 import axios from 'axios';
 // Adjust base URLs to include the service paths
-const baseURL = process.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
+const baseURL = window.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
 
 // Auth Service API instance
 const authApi = axios.create({
