@@ -19,6 +19,7 @@ function Login() {
       localStorage.setItem('token', token);
       
       // Redirect to the dashboard after successful login
+      console.log('Login successful, navigating to dashboard');
       navigate('/dashboard'); 
 
       setError(null);
