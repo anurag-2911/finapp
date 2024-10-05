@@ -55,3 +55,13 @@ export const getFinancingOptions = async () => {
 export const sendNotification = async (user, message) => {
   return await analyticsApi.post('/notify', { user, message });
 };
+
+export const fetchFinancingOptions = async () => {
+  try {
+    const response = await financeApi.get('/financing-options');
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching financing options:", error);
+    throw error;
+  }
+};
