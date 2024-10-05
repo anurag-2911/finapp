@@ -40,7 +40,7 @@ const FinancingOptions = () => {
       <Grid container spacing={2}>
         {options.map((option) => (
           <Grid item xs={12} sm={6} md={4} key={option._id}>
-            <Card>
+            <Card sx={{ position: 'relative' }}>
               <CardContent>
                 <FormControlLabel
                   control={
