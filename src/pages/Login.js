@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api/apiService';
@@ -9,34 +9,34 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
-  const { user } = useContext(UserContext);
-  console.log('user state before setUser',  user);
-  console.log('user token before setUser', user.token);
-  console.log('user role before setUser', user.role);
+  const { user, setUser } = useContext(UserContext);
+
+  // Log user state before setting
+  console.log('User state before login:', user);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await login(username, password);
       const { access_token, role } = response.data;
-      
-      // Set user state
+
+      // Set user state with token and role
       setUser({ token: access_token, role });
-      console.log('user state after setUser', user);
-      console.log('user token after setUser', user.token);
-      console.log('user role after setUser', user.role);
-
-      // Redirect to the dashboard after successful login
-      console.log('Login successful, navigating to dashboard');
-
-      navigate('/dashboard');
-
       setError(null);
+      console.log('Login successful, setting user and navigating');
     } catch (err) {
       console.error('Login error:', err);
       setError('Invalid credentials');
     }
   };
+
+  // useEffect to navigate after user token is set
+  useEffect(() => {
+    if (user?.token) {
+      console.log('User token exists, navigating to dashboard');
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   return (
     <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
