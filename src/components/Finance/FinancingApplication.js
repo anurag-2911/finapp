@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { TextField, Button, Box, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Box, Typography, Grid, Checkbox, FormControlLabel, Button, TextField } from '@mui/material';
 import { fetchFinancingOptions } from '../../api/apiService';
 
 const FinancingApplication = () => {
   const [options, setOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [totalMaxAmount, setTotalMaxAmount] = useState(0);
+  const [neededAmount, setNeededAmount] = useState('');
 
   useEffect(() => {
     const loadOptions = async () => {
@@ -15,67 +15,73 @@ const FinancingApplication = () => {
       setOptions(data);
       const savedSelections = JSON.parse(localStorage.getItem('selectedOptions')) || [];
       setSelectedOptions(savedSelections);
+      calculateTotalMaxAmount(savedSelections, data);
     };
 
     loadOptions();
   }, []);
 
-  const formik = useFormik({
-    initialValues: {
-      amount: '',
-      purpose: '',
-      selectedOption: '',
-    },
-    validationSchema: Yup.object({
-      amount: Yup.number().required('Required'),
-      purpose: Yup.string().required('Required'),
-      selectedOption: Yup.string().required('Required'),
-    }),
-    onSubmit: async (values) => {
-      const token = localStorage.getItem('token');
-      try {
-        const response = await axios.post('http://<BACKEND_API_URL>/apply-finance', values, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log('Financing application submitted:', response.data);
-      } catch (err) {
-        console.error('Error submitting application:', err);
-      }
-    },
-  });
+  const handleSelect = (optionId) => {
+    const updatedSelections = selectedOptions.includes(optionId)
+      ? selectedOptions.filter(id => id !== optionId)
+      : [...selectedOptions, optionId];
+    setSelectedOptions(updatedSelections);
+    localStorage.setItem('selectedOptions', JSON.stringify(updatedSelections));
+    calculateTotalMaxAmount(updatedSelections, options);
+  };
+
+  const calculateTotalMaxAmount = (selectedIds, allOptions) => {
+    const total = selectedIds.reduce((sum, id) => {
+      const option = allOptions.find(opt => opt._id === id);
+      return sum + (option ? option.max_amount : 0);
+    }, 0);
+    setTotalMaxAmount(total);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.post('http://<BACKEND_API_URL>/apply-finance', { selectedOptions, neededAmount }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('Financing application submitted:', response.data);
+    } catch (err) {
+      console.error('Error submitting application:', err);
+    }
+  };
 
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h5">Apply for Financing</Typography>
-      <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="selectedOption-label">Select Option</InputLabel>
-          <Select
-            labelId="selectedOption-label"
-            id="selectedOption"
-            name="selectedOption"
-            value={formik.values.selectedOption}
-            onChange={formik.handleChange}
-            error={formik.touched.selectedOption && Boolean(formik.errors.selectedOption)}
-          >
-            {options.map((option) => (
-              <MenuItem key={option._id} value={option._id} disabled={!selectedOptions.includes(option._id)}>
-                {option.option_name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+          {options.map((option) => (
+            <Grid item xs={12} sm={6} md={4} key={option._id}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedOptions.includes(option._id)}
+                    onChange={() => handleSelect(option._id)}
+                  />
+                }
+                label={option.option_name}
+              />
+            </Grid>
+          ))}
+        </Grid>
+        <Typography variant="h6" sx={{ mt: 2 }}>
+          Total Max Amount: ${totalMaxAmount}
+        </Typography>
         <TextField
           fullWidth
-          id="amount"
-          name="amount"
-          label="Amount"
-          value={formik.values.amount}
-          onChange={formik.handleChange}
-          error={formik.touched.amount && Boolean(formik.errors.amount)}
-          helperText={formik.touched.amount && formik.errors.amount}
+          id="neededAmount"
+          name="neededAmount"
+          label="Needed Amount"
+          value={neededAmount}
+          onChange={(e) => setNeededAmount(e.target.value)}
           margin="normal"
         />
         <TextField
@@ -83,16 +89,12 @@ const FinancingApplication = () => {
           id="purpose"
           name="purpose"
           label="Purpose"
-          value={formik.values.purpose}
-          onChange={formik.handleChange}
-          error={formik.touched.purpose && Boolean(formik.errors.purpose)}
-          helperText={formik.touched.purpose && formik.errors.purpose}
           margin="normal"
         />
         <Button color="primary" variant="contained" type="submit">
           Submit Application
         </Button>
-      </Box>
+      </form>
     </Box>
   );
 };
