@@ -16,9 +16,10 @@ const AdminPanel = () => {
   useEffect(() => {
     const loadApplications = async () => {
       try {
-        const data = await fetchAllApplications(token); // Fetch applications from the backend
-        
-        // Ensure we handle the case where data is not an array
+        const response = await fetchAllApplications(token); // Fetch applications from the backend
+        const { data } = response; // Extract 'data' which contains the applications
+
+        // Ensure we handle the case where data is an array
         if (Array.isArray(data)) {
           setApplications(data);
         } else {
