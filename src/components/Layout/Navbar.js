@@ -41,7 +41,7 @@ const Navbar = () => {
               Financing Options
             </Button>
 
-            <Button color="inherit" component={Link} to="/admin-panel" disabled={!Boolean(isUserTokenValid)}>
+            <Button color="inherit" component={Link} to="/admin-panel" disabled={!Boolean(isUserAdmin)}>
               Admin Panel
             </Button>
 

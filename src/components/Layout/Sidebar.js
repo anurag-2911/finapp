@@ -26,25 +26,25 @@ const Sidebar = () => {
       }}
     >
       <List>
-        <ListItem button component={Link} to="/dashboard" disabled={!isUserTokenValid}>
+        <ListItem button component={Link} to="/dashboard" disabled={!Boolean(isUserTokenValid)}>
           <ListItemIcon sx={{ color: 'white' }}>
             <Dashboard />
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
         </ListItem>
-        <ListItem button component={Link} to="/apply-finance" disabled={!isUserTokenValid}>
+        <ListItem button component={Link} to="/apply-finance" disabled={!Boolean(isUserTokenValid)}>
           <ListItemIcon sx={{ color: 'white' }}>
             <MonetizationOn />
           </ListItemIcon>
           <ListItemText primary="Apply for Financing" />
         </ListItem>
-        <ListItem button component={Link} to="/financing-options" disabled={!isUserTokenValid}>
+        <ListItem button component={Link} to="/financing-options" disabled={!Boolean(isUserTokenValid)}>
           <ListItemIcon sx={{ color: 'white' }}>
             <AccountBalance />
           </ListItemIcon>
           <ListItemText primary="Financing Options" />
         </ListItem>
-        <ListItem button component={Link} to="/admin-panel" disabled={!isUserAdmin}>
+        <ListItem button component={Link} to="/admin-panel" disabled={!Boolean(isUserAdmin)}>
           <ListItemIcon sx={{ color: 'white' }}>
             <Settings />
           </ListItemIcon>

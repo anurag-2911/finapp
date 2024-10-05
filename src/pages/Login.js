@@ -27,7 +27,8 @@ function Login() {
       console.log('user role after setUser', user.role);
 
       // Redirect to the dashboard after successful login
-      console.log('Login successful, navigating to dashboard',role);
+      console.log('Login successful, navigating to dashboard');
+
       navigate('/dashboard');
 
       setError(null);
