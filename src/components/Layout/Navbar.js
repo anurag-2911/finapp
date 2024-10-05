@@ -6,7 +6,7 @@ import { UserContext } from '../../context/UserContext';
 const Navbar = () => {
   const { user } = useContext(UserContext);
   const isUserAdmin = user?.role === 'admin';
-  const isUserTokenValid = user && user.token;
+  const isUserTokenValid = Boolean(user?.token);
 
   console.log('user state in navbar', user);
   console.log('isUserAdmin in navbar', isUserAdmin);
@@ -24,20 +24,20 @@ const Navbar = () => {
           </Button>
 
           <>
-            <Button color="inherit" component={Link} to="/login" disabled={!(isUserTokenValid==="")}>
+            <Button color="inherit" component={Link} to="/login" disabled={!isUserTokenValid}>
               Login
             </Button>
-            <Button color="inherit" component={Link} to="/signup" disabled={!(isUserTokenValid==="")}>
+            <Button color="inherit" component={Link} to="/signup" disabled={!isUserTokenValid}>
               Signup
             </Button>
           </>
 
 
           <>
-            <Button color="inherit" component={Link} to="/dashboard" disabled={!(isUserTokenValid!=="")}>
+            <Button color="inherit" component={Link} to="/dashboard" disabled={isUserTokenValid}>
               Dashboard
             </Button>
-            <Button color="inherit" component={Link} to="/financing-options" disabled={!(isUserTokenValid!=="")}>
+            <Button color="inherit" component={Link} to="/financing-options" disabled={isUserTokenValid}>
               Financing Options
             </Button>
 

@@ -7,7 +7,7 @@ import { UserContext } from '../../context/UserContext';
 const Sidebar = () => {
   const { user } = useContext(UserContext);
   const isUserAdmin = user?.role === 'admin';
-  const isUserTokenValid = user && user.token;
+  const isUserTokenValid = Boolean(user?.token);
 
   console.log('user state in sidebar',   user);
   console.log('isUserAdmin in sidebar', isUserAdmin);
@@ -26,19 +26,19 @@ const Sidebar = () => {
       }}
     >
       <List>
-        <ListItem button component={Link} to="/dashboard" disabled={!(isUserTokenValid==="")}>
+        <ListItem button component={Link} to="/dashboard" disabled={isUserTokenValid}>
           <ListItemIcon sx={{ color: 'white' }}>
             <Dashboard />
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
         </ListItem>
-        <ListItem button component={Link} to="/apply-finance" disabled={!(isUserTokenValid==="")}>
+        <ListItem button component={Link} to="/apply-finance" disabled={isUserTokenValid}>
           <ListItemIcon sx={{ color: 'white' }}>
             <MonetizationOn />
           </ListItemIcon>
           <ListItemText primary="Apply for Financing" />
         </ListItem>
-        <ListItem button component={Link} to="/financing-options" disabled={!(isUserTokenValid==="")}>
+        <ListItem button component={Link} to="/financing-options" disabled={isUserTokenValid}>
           <ListItemIcon sx={{ color: 'white' }}>
             <AccountBalance />
           </ListItemIcon>
