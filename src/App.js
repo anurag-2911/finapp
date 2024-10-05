@@ -21,10 +21,11 @@ function App() {
         <div className="App">
           <CssBaseline />
           <Navbar />
-          <Box sx={{ display: 'flex', flexDirection: 'row' }}> {/* Ensure Sidebar and Main align horizontally */}
+          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
             <Sidebar />
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}> {/* Removed marginTop */}
-              <Toolbar /> {/* Adds spacing for the AppBar */}
+            <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8 }}> {/* Increased top margin */}
+              {/* Adds spacing for the AppBar */}
+              <Toolbar /> {/* Ensure enough spacing */}
               <Routes>
                 <Route exact path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />

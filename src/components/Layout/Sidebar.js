@@ -13,7 +13,8 @@ const Sidebar = () => {
         color: 'white',
         display: 'flex',
         flexDirection: 'column',
-        paddingTop: '2rem',
+        paddingTop: '64px', // Adjusted to match AppBar height
+        boxSizing: 'border-box', // Ensure padding is included in height
       }}
     >
       <List>
