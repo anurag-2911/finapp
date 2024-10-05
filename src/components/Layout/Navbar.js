@@ -16,20 +16,20 @@ const Navbar = () => {
           <Button color="inherit" component={Link} to="/" disabled={!isAuthenticated}>
             Home
           </Button>
-          <Button color="inherit" component={Link} to="/login" disabled={isAuthenticated}>
+          <Button color="inherit" component={Link} to="/login" disabled={!isAuthenticated}>
             Login
           </Button>
-          <Button color="inherit" component={Link} to="/signup" disabled={isAuthenticated}>
+          <Button color="inherit" component={Link} to="/signup" disabled={!isAuthenticated}>
             Signup
           </Button>
-          <Button color="inherit" component={Link} to="/dashboard" disabled={!isAuthenticated}>
+          <Button color="inherit" component={Link} to="/dashboard" disabled={isAuthenticated}>
             Dashboard
           </Button>
-          <Button color="inherit" component={Link} to="/financing-options" disabled={!isAuthenticated}>
+          <Button color="inherit" component={Link} to="/financing-options" disabled={isAuthenticated}>
             Financing Options
           </Button>
           {userRole === 'admin' && (
-            <Button color="inherit" component={Link} to="/admin-panel" disabled={!isAuthenticated}>
+            <Button color="inherit" component={Link} to="/admin-panel" disabled={isAuthenticated}>
               Admin Panel
             </Button>
           )}
