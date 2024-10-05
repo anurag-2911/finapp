@@ -11,9 +11,6 @@ function Login() {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
 
-  // Log user state before setting
-  console.log('User state before login:', user);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -21,22 +18,27 @@ function Login() {
       const { access_token, role } = response.data;
 
       // Set user state with token and role
-      setUser({ token: access_token, role });
+      setUser((prevState) => ({
+        ...prevState,
+        token: access_token,
+        role: role
+      }));
+      
       setError(null);
-      console.log('Login successful, setting user and navigating');
+      console.log('Login successful, user state updated');
     } catch (err) {
       console.error('Login error:', err);
       setError('Invalid credentials');
     }
   };
 
-  
+  // useEffect to navigate only when user.token changes
   useEffect(() => {
     if (user?.token) {
       console.log('User token exists, navigating to dashboard');
       navigate('/dashboard', { replace: true });
     }
-  }, [user.token, navigate]); 
+  }, [user?.token, navigate]); // Only trigger if user.token changes
 
   return (
     <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
