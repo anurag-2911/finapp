@@ -70,3 +70,33 @@ export const fetchUserApplications = async (token) => {
     throw error;
   }
 };
+
+// Fetch all applications (paginated if needed)
+export const fetchAllApplications = async (token) => {
+  try {
+    const response = await axios.get('/admin/applications', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all applications:', error);
+    throw error;
+  }
+};
+
+// Update application status
+export const updateApplicationStatus = async (appId, newStatus, token) => {
+  try {
+    const response = await axios.put(`/admin/update_status/${appId}/${newStatus}`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating application status:', error);
+    throw error;
+  }
+};
