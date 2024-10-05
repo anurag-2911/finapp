@@ -4,6 +4,7 @@ import { Dashboard, MonetizationOn, AccountBalance, Settings } from '@mui/icons-
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
+  const isAuthenticated = !!localStorage.getItem('token');
   const userRole = localStorage.getItem('role');
 
   return (
@@ -20,26 +21,26 @@ const Sidebar = () => {
       }}
     >
       <List>
-        <ListItem button component={Link} to="/dashboard">
+        <ListItem button component={Link} to="/dashboard" disabled={!isAuthenticated}>
           <ListItemIcon sx={{ color: 'white' }}>
             <Dashboard />
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
         </ListItem>
-        <ListItem button component={Link} to="/apply-finance">
+        <ListItem button component={Link} to="/apply-finance" disabled={!isAuthenticated}>
           <ListItemIcon sx={{ color: 'white' }}>
             <MonetizationOn />
           </ListItemIcon>
           <ListItemText primary="Apply for Financing" />
         </ListItem>
-        <ListItem button component={Link} to="/financing-options">
+        <ListItem button component={Link} to="/financing-options" disabled={!isAuthenticated}>
           <ListItemIcon sx={{ color: 'white' }}>
             <AccountBalance />
           </ListItemIcon>
           <ListItemText primary="Financing Options" />
         </ListItem>
         {userRole === 'admin' && (
-          <ListItem button component={Link} to="/admin-panel">
+          <ListItem button component={Link} to="/admin-panel" disabled={!isAuthenticated}>
             <ListItemIcon sx={{ color: 'white' }}>
               <Settings />
             </ListItemIcon>

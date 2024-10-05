@@ -13,30 +13,25 @@ const Navbar = () => {
           Finance App
         </Typography>
         <Box>
-          <Button color="inherit" component={Link} to="/">
+          <Button color="inherit" component={Link} to="/" disabled={!isAuthenticated}>
             Home
           </Button>
-          {!isAuthenticated && (
-            <>
-              <Button color="inherit" component={Link} to="/login">
-                Login
-              </Button>
-              <Button color="inherit" component={Link} to="/signup">
-                Signup
-              </Button>
-            </>
-          )}
-          {isAuthenticated && (
-            <>
-              <Button color="inherit" component={Link} to="/dashboard">
-                Dashboard
-              </Button>
-              {userRole === 'admin' && (
-                <Button color="inherit" component={Link} to="/admin-panel">
-                  Admin Panel
-                </Button>
-              )}
-            </>
+          <Button color="inherit" component={Link} to="/login" disabled={isAuthenticated}>
+            Login
+          </Button>
+          <Button color="inherit" component={Link} to="/signup" disabled={isAuthenticated}>
+            Signup
+          </Button>
+          <Button color="inherit" component={Link} to="/dashboard" disabled={!isAuthenticated}>
+            Dashboard
+          </Button>
+          <Button color="inherit" component={Link} to="/financing-options" disabled={!isAuthenticated}>
+            Financing Options
+          </Button>
+          {userRole === 'admin' && (
+            <Button color="inherit" component={Link} to="/admin-panel" disabled={!isAuthenticated}>
+              Admin Panel
+            </Button>
           )}
         </Box>
       </Toolbar>

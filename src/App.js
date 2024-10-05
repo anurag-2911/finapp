@@ -34,8 +34,8 @@ function App() {
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/apply-finance" element={<FinancingApplication />} />
                   <Route path="/financing-options" element={<FinancingOptions />} />
+                  <Route path="/admin-panel" element={<AdminPanel />} />
                 </Route>
-                <Route path="/admin-panel" element={<AdminPanel />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Box>
