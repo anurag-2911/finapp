@@ -1,16 +1,16 @@
 import React, { useContext } from 'react';
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../context/UserContext';
+import { AuthContext } from '../../context/AuthProvider'; // Import AuthContext
 
 const Navbar = () => {
-  const { user } = useContext(UserContext);
-  const isUserAdmin = user?.role === 'admin';
-  const isUserTokenValid = Boolean(user?.token);
+  const { state } = useContext(AuthContext); // Access global authentication state
+  const isUserAdmin = state.role === 'admin'; // Check if the user is an admin
+  const isAuthenticated = state.isAuthenticated; // Check if the user is authenticated
 
-  console.log('user state in navbar', user);
+  console.log('Auth state in navbar', state);
   console.log('isUserAdmin in navbar', isUserAdmin);
-  console.log('isUserTokenValid in navbar', isUserTokenValid);
+  console.log('isAuthenticated in navbar', isAuthenticated);
 
   return (
     <AppBar position="fixed" color="primary" sx={{ zIndex: 1201 }}>
@@ -23,30 +23,23 @@ const Navbar = () => {
             Home
           </Button>
 
-          <>
-            <Button color="inherit" component={Link} to="/login">
-              Login
-            </Button>
-            <Button color="inherit" component={Link} to="/signup">
-              Signup
-            </Button>
-          </>
+          <Button color="inherit" component={Link} to="/login" disabled={isAuthenticated}>
+            Login
+          </Button>
+          <Button color="inherit" component={Link} to="/signup" disabled={isAuthenticated}>
+            Signup
+          </Button>
 
+          <Button color="inherit" component={Link} to="/dashboard" disabled={!isAuthenticated}>
+            Dashboard
+          </Button>
+          <Button color="inherit" component={Link} to="/financing-options" disabled={!isAuthenticated}>
+            Financing Options
+          </Button>
 
-          <>
-            <Button color="inherit" component={Link} to="/dashboard" disabled={!Boolean(isUserTokenValid)}>
-              Dashboard
-            </Button>
-            <Button color="inherit" component={Link} to="/financing-options" disabled={!Boolean(isUserTokenValid)}>
-              Financing Options
-            </Button>
-
-            <Button color="inherit" component={Link} to="/admin-panel" disabled={!Boolean(isUserAdmin)}>
-              Admin Panel
-            </Button>
-
-          </>
-
+          <Button color="inherit" component={Link} to="/admin-panel" disabled={!isUserAdmin}>
+            Admin Panel
+          </Button>
         </Box>
       </Toolbar>
     </AppBar>

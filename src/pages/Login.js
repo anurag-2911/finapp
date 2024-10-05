@@ -1,15 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api/apiService';
-import { UserContext } from '../context/UserContext';
+import { AuthContext } from '../context/AuthProvider'; // Import AuthContext
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
+  const { dispatch } = useContext(AuthContext); // Access dispatch from AuthContext
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -17,28 +17,19 @@ function Login() {
       const response = await login(username, password);
       const { access_token, role } = response.data;
 
-      // Set user state with token and role
-      setUser((prevState) => ({
-        ...prevState,
-        token: access_token,
-        role: role
-      }));
-      
+      // Dispatch the login success action
+      dispatch({
+        type: 'LOGIN_SUCCESS',
+        payload: { token: access_token, role }
+      });
+
       setError(null);
-      console.log('Login successful, user state updated');
+      navigate('/dashboard');
     } catch (err) {
       console.error('Login error:', err);
       setError('Invalid credentials');
     }
   };
-
-  // useEffect to navigate only when user.token changes
-  useEffect(() => {
-    if (user?.token) {
-      console.log('User token exists, navigating to dashboard');
-      navigate('/dashboard', { replace: true });
-    }
-  }, [user?.token, navigate]); // Only trigger if user.token changes
 
   return (
     <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

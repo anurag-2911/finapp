@@ -1,12 +1,11 @@
-// src/index.js
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import { UserProvider } from './context/UserContext';
+import { AuthProvider } from './context/AuthProvider'; // Use AuthProvider instead of UserProvider
 
 ReactDOM.render(
-  <UserProvider>
+  <AuthProvider> {/* Replace UserProvider with AuthProvider */}
     <App />
-  </UserProvider>,
+  </AuthProvider>,
   document.getElementById('root')
 );

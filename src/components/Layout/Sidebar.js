@@ -2,16 +2,17 @@ import React, { useContext } from 'react';
 import { Box, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { Dashboard, MonetizationOn, AccountBalance, Settings } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../context/UserContext';
+import { AuthContext } from '../../context/AuthProvider'; // Import AuthContext
 
 const Sidebar = () => {
-  const { user } = useContext(UserContext);
-  const isUserAdmin = user?.role === 'admin';
-  const isUserTokenValid = Boolean(user?.token);
+  const { state } = useContext(AuthContext); // Access global authentication state
+  const isUserAdmin = state.role === 'admin'; // Check if the user is an admin
+  const isAuthenticated = state.isAuthenticated; // Check if the user is authenticated
 
-  console.log('user state in sidebar',   user);
+  console.log('Auth state in sidebar', state);
   console.log('isUserAdmin in sidebar', isUserAdmin);
-  console.log('isUserTokenValid in sidebar', isUserTokenValid);
+  console.log('isAuthenticated in sidebar', isAuthenticated);
+
   return (
     <Box
       sx={{
@@ -26,31 +27,30 @@ const Sidebar = () => {
       }}
     >
       <List>
-        <ListItem button component={Link} to="/dashboard" disabled={!Boolean(isUserTokenValid)}>
+        <ListItem button component={Link} to="/dashboard" disabled={!isAuthenticated}>
           <ListItemIcon sx={{ color: 'white' }}>
             <Dashboard />
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
         </ListItem>
-        <ListItem button component={Link} to="/apply-finance" disabled={!Boolean(isUserTokenValid)}>
+        <ListItem button component={Link} to="/apply-finance" disabled={!isAuthenticated}>
           <ListItemIcon sx={{ color: 'white' }}>
             <MonetizationOn />
           </ListItemIcon>
           <ListItemText primary="Apply for Financing" />
         </ListItem>
-        <ListItem button component={Link} to="/financing-options" disabled={!Boolean(isUserTokenValid)}>
+        <ListItem button component={Link} to="/financing-options" disabled={!isAuthenticated}>
           <ListItemIcon sx={{ color: 'white' }}>
             <AccountBalance />
           </ListItemIcon>
           <ListItemText primary="Financing Options" />
         </ListItem>
-        <ListItem button component={Link} to="/admin-panel" disabled={!Boolean(isUserAdmin)}>
+        <ListItem button component={Link} to="/admin-panel" disabled={!isUserAdmin}>
           <ListItemIcon sx={{ color: 'white' }}>
             <Settings />
           </ListItemIcon>
           <ListItemText primary="Admin Panel" />
         </ListItem>
-
       </List>
     </Box>
   );
