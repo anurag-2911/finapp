@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: finapp-deployment
+  name: finapp-ui
   labels:
     app: finapp
 spec:
