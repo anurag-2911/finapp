@@ -24,20 +24,20 @@ const Navbar = () => {
           </Button>
 
           <>
-            <Button color="inherit" component={Link} to="/login" disabled={!isUserTokenValid}>
+            <Button color="inherit" component={Link} to="/login" disabled={isUserTokenValid}>
               Login
             </Button>
-            <Button color="inherit" component={Link} to="/signup" disabled={!isUserTokenValid}>
+            <Button color="inherit" component={Link} to="/signup" disabled={isUserTokenValid}>
               Signup
             </Button>
           </>
 
 
           <>
-            <Button color="inherit" component={Link} to="/dashboard" disabled={isUserTokenValid}>
+            <Button color="inherit" component={Link} to="/dashboard" disabled={!isUserTokenValid}>
               Dashboard
             </Button>
-            <Button color="inherit" component={Link} to="/financing-options" disabled={isUserTokenValid}>
+            <Button color="inherit" component={Link} to="/financing-options" disabled={!isUserTokenValid}>
               Financing Options
             </Button>
 
