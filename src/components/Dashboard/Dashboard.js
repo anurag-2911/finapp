@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, Card, CardContent, Button } from '@mui/material';
 import { fetchUserApplications } from '../../api/apiService'; // Import API service to fetch user's applications
 import { useAuthToken } from '../../context/AuthProvider'; // Import to get the current user's token
+import { Link } from 'react-router-dom'; // For navigating to Financing Options
 
 const Dashboard = () => {
   const [applications, setApplications] = useState([]); // Store user applications
   const [loading, setLoading] = useState(true); // Track loading state
   const [error, setError] = useState(null); // Error state
 
-  // Get the current user's token (this assumes you have a token-based authentication)
+  
   const token = useAuthToken();
 
   useEffect(() => {
@@ -31,9 +32,7 @@ const Dashboard = () => {
     <Typography variant="h6" color="textSecondary" align="center" sx={{ mt: 3 }}>
       You have no active finance applications.
       <br />
-      <Button color="primary" variant="contained" href="/financing-options" sx={{ mt: 2 }}>
-        Explore Financing Options
-      </Button>
+      Explore <Link to="/financing-options">Financing Options</Link> and apply for a loan.
     </Typography>
   );
 
@@ -45,7 +44,7 @@ const Dashboard = () => {
           <Card variant="outlined">
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                {app.purpose}
+                {app.purpose || 'Loan'}
               </Typography>
               <Typography variant="body2" color="textSecondary">
                 Loan Amount: ${app.amount}
@@ -56,6 +55,14 @@ const Dashboard = () => {
               <Typography variant="body2" color="textSecondary">
                 Submitted: {new Date(app.submitted_at).toLocaleDateString()}
               </Typography>
+              <Typography variant="body2" color="textSecondary">
+                Loan Types:
+              </Typography>
+              <ul>
+                {app.loan_types && app.loan_types.map((loanTypeId, index) => (
+                  <li key={index}>{loanTypeId}</li> // Display loan types
+                ))}
+              </ul>
             </CardContent>
           </Card>
         </Grid>
