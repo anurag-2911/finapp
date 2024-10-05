@@ -24,31 +24,30 @@ const Home = () => {
       description: 'Personal loans for all your needs with flexible repayment options.',
       image: '/images/personalloan.jpg', 
     },
-   
   ];
 
   return (
-    <Box sx={{ p: 4, textAlign: 'center' }}>
+    <Box sx={{ p: { xs: 2, md: 4 }, textAlign: 'center' }}>
       {/* Header Section */}
       <Typography variant="h3" gutterBottom>
         Welcome to Our Finance Application
       </Typography>
-      <Typography variant="body1" sx={{ mb: 5 }}>
+      <Typography variant="body1" sx={{ mb: 5, px: { xs: 2, md: 0 } }}>
         Explore various financing options tailored for your needs. Manage your finances effectively with us!
       </Typography>
 
       {/* Loan Options Section */}
-      <Grid container spacing={4}>
+      <Grid container spacing={4} justifyContent="center">
         {loanOptions.map((option, index) => (
-          <Grid item xs={12} md={6} lg={3} key={index}>
-            <Card sx={{ maxWidth: 345 }}>
+          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
               <CardMedia
                 component="img"
                 alt={option.title}
-                height="140"
+                height="160"
                 image={option.image}
               />
-              <CardContent>
+              <CardContent sx={{ flexGrow: 1 }}>
                 <Typography gutterBottom variant="h5" component="div">
                   {option.title}
                 </Typography>
@@ -56,20 +55,22 @@ const Home = () => {
                   {option.description}
                 </Typography>
               </CardContent>
-              <Button variant="contained" color="primary" sx={{ m: 2 }}>
-                Learn More
-              </Button>
+              <Box sx={{ textAlign: 'center', pb: 2 }}>
+                <Button variant="contained" color="primary">
+                  Learn More
+                </Button>
+              </Box>
             </Card>
           </Grid>
         ))}
       </Grid>
 
       {/* Benefits of Loans Section */}
-      <Box sx={{ mt: 6 }}>
+      <Box sx={{ mt: 6, px: { xs: 2, md: 0 } }}>
         <Typography variant="h4" gutterBottom>
           Why Take a Loan with Us?
         </Typography>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} justifyContent="center">
           <Grid item xs={12} md={4}>
             <Typography variant="h6">Low Interest Rates</Typography>
             <Typography variant="body1">
