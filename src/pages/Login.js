@@ -22,11 +22,16 @@ function Login() {
         type: 'LOGIN_SUCCESS',
         payload: { token: access_token, role }
       });
-  
+
       console.log("Login successful, token and role set:", access_token, role); // Debugging
-  
+
       setError(null);
-      navigate('/dashboard');
+      // Navigate based on role
+      if (role === 'admin') {
+        navigate('/admin-panel'); // Navigate to AdminPanel if user is admin
+      } else {
+        navigate('/dashboard'); // Navigate to Dashboard for normal users
+      }
     } catch (err) {
       console.error('Login error:', err);
       setError('Invalid credentials');
