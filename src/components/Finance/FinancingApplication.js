@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, Checkbox, FormControlLabel, Button, TextField } from '@mui/material';
 import { fetchFinancingOptions, applyForFinance } from '../../api/apiService'; // Import API functions
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const FinancingApplication = () => {
   const [options, setOptions] = useState([]); // Available financing options
@@ -9,6 +10,9 @@ const FinancingApplication = () => {
   const [neededAmount, setNeededAmount] = useState(''); // User input for needed amount
   const [purpose, setPurpose] = useState(''); // User input for the purpose
   const [error, setError] = useState(null); // Error handling state
+  const [success, setSuccess] = useState(false); // Success message state
+
+  const navigate = useNavigate(); // Initialize navigate
 
   // Load financing options from backend on component mount
   useEffect(() => {
@@ -52,7 +56,13 @@ const FinancingApplication = () => {
     try {
       await applyForFinance(selectedOptions, neededAmount, purpose); // Use API service to submit
       console.log('Financing application submitted successfully');
+      setSuccess(true); // Show success message
       setError(null); // Clear any previous errors
+
+      // Navigate to dashboard after 5 seconds
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 5000);
     } catch (err) {
       console.error('Error submitting application:', err);
       setError('Failed to submit application');
@@ -63,6 +73,7 @@ const FinancingApplication = () => {
     <Box sx={{ p: 3 }}>
       <Typography variant="h5">Apply for Financing</Typography>
       {error && <Typography color="error">{error}</Typography>}
+      {success && <Typography color="primary">Application submitted successfully! Redirecting to dashboard...</Typography>}
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           {options.map((option) => (
@@ -100,7 +111,7 @@ const FinancingApplication = () => {
           onChange={(e) => setPurpose(e.target.value)}
           margin="normal"
         />
-        <Button color="primary" variant="contained" type="submit" sx={{ mt: 2 }}>
+        <Button color="primary" variant="contained" type="submit" sx={{ mt: 2 }} disabled={success}>
           Submit Application
         </Button>
       </form>
