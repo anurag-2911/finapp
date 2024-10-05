@@ -16,13 +16,15 @@ function Login() {
     try {
       const response = await login(username, password);
       const { access_token, role } = response.data;
-
+  
       // Dispatch the login success action
       dispatch({
         type: 'LOGIN_SUCCESS',
         payload: { token: access_token, role }
       });
-
+  
+      console.log("Login successful, token and role set:", access_token, role); // Debugging
+  
       setError(null);
       navigate('/dashboard');
     } catch (err) {

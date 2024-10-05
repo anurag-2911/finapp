@@ -8,30 +8,19 @@ const authApi = axios.create({ baseURL });
 const financeApi = axios.create({ baseURL });
 const analyticsApi = axios.create({ baseURL });
 
+// Helper function to get the token from localStorage
+function attachAuthToken(config) {
+  const token = localStorage.getItem('token'); // Fetch token from localStorage
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}
+
 // Intercept all requests to attach the token
-authApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-financeApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-analyticsApi.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+authApi.interceptors.request.use(attachAuthToken);
+financeApi.interceptors.request.use(attachAuthToken);
+analyticsApi.interceptors.request.use(attachAuthToken);
 
 // Auth API calls
 export const login = async (username, password) => {
