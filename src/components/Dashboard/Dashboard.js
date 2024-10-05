@@ -1,40 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Grid, Card, CardContent, Button } from '@mui/material';
-import { fetchUserApplications } from '../../api/apiService'; // Import API service to fetch user's applications
+import { Box, Typography, Grid, Card, CardContent,Button } from '@mui/material';
+import { fetchUserApplications, fetchFinancingOptions } from '../../api/apiService'; // Import both API services
 import { useAuthToken } from '../../context/AuthProvider'; // Import to get the current user's token
-import { Link } from 'react-router-dom'; // For navigating to Financing Options
 
 const Dashboard = () => {
   const [applications, setApplications] = useState([]); // Store user applications
+  const [financingOptions, setFinancingOptions] = useState([]); // Store all financing options
   const [loading, setLoading] = useState(true); // Track loading state
   const [error, setError] = useState(null); // Error state
 
-  
+  // Get the current user's token (this assumes you have a token-based authentication)
   const token = useAuthToken();
 
   useEffect(() => {
-    const loadApplications = async () => {
+    const loadDashboardData = async () => {
       try {
-        const data = await fetchUserApplications(token); // Fetch user applications
-        setApplications(data || []); // Set applications if available
+        // Fetch user applications
+        const appData = await fetchUserApplications(token);
+
+        // Fetch financing options
+        const optionsData = await fetchFinancingOptions();
+
+        setApplications(appData || []); // Set applications if available
+        setFinancingOptions(optionsData || []); // Set financing options
         setLoading(false); // Disable loading once data is fetched
       } catch (err) {
-        console.error('Error fetching applications:', err);
-        setError('Failed to load applications');
+        console.error('Error fetching dashboard data:', err);
+        setError('Failed to load dashboard data');
         setLoading(false);
       }
     };
-    loadApplications();
+    loadDashboardData();
   }, [token]);
 
-  // Render a message if there are no applications
-  const renderNoApplicationsMessage = () => (
-    <Typography variant="h6" color="textSecondary" align="center" sx={{ mt: 3 }}>
-      You have no active finance applications.
-      <br />
-      Explore <Link to="/financing-options">Financing Options</Link> and apply for a loan.
-    </Typography>
-  );
+  // Helper function to map loan type IDs to loan option names
+  const getLoanTypeNames = (loanTypeIds) => {
+    return loanTypeIds.map(id => {
+      const loanOption = financingOptions.find(option => option._id === id);
+      return loanOption ? loanOption.option_name : id; // Return option name or the ID if not found
+    });
+  };
 
   // Render the application cards
   const renderApplications = () => (
@@ -44,7 +49,7 @@ const Dashboard = () => {
           <Card variant="outlined">
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                {app.purpose || 'Loan'}
+                {app.purpose}
               </Typography>
               <Typography variant="body2" color="textSecondary">
                 Loan Amount: ${app.amount}
@@ -55,14 +60,14 @@ const Dashboard = () => {
               <Typography variant="body2" color="textSecondary">
                 Submitted: {new Date(app.submitted_at).toLocaleDateString()}
               </Typography>
-              <Typography variant="body2" color="textSecondary">
+              <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
                 Loan Types:
+                <ul>
+                  {getLoanTypeNames(app.loan_types).map((loanType, index) => (
+                    <li key={index}>{loanType}</li>
+                  ))}
+                </ul>
               </Typography>
-              <ul>
-                {app.loan_types && app.loan_types.map((loanTypeId, index) => (
-                  <li key={index}>{loanTypeId}</li> // Display loan types
-                ))}
-              </ul>
             </CardContent>
           </Card>
         </Grid>
@@ -73,6 +78,17 @@ const Dashboard = () => {
   if (loading) {
     return <Typography variant="h6">Loading...</Typography>;
   }
+
+  // Render a message if there are no applications
+  const renderNoApplicationsMessage = () => (
+    <Typography variant="h6" color="textSecondary" align="center" sx={{ mt: 3 }}>
+      You have no active finance applications.
+      <br />
+      <Button variant="contained" href="/financing-options" sx={{ mt: 2 }}>
+        Explore Financing Options
+      </Button>
+    </Typography>
+  );
 
   return (
     <Box sx={{ p: 3 }}>
