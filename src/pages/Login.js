@@ -30,13 +30,13 @@ function Login() {
     }
   };
 
-  // useEffect to navigate after user token is set
+  
   useEffect(() => {
     if (user?.token) {
       console.log('User token exists, navigating to dashboard');
-      navigate('/dashboard');
+      navigate('/dashboard', { replace: true });
     }
-  }, [user, navigate]);
+  }, [user.token, navigate]); 
 
   return (
     <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
