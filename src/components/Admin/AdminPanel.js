@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Select, MenuItem } from '@mui/material';
+import {
+  Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Select, MenuItem, Card, CardContent, Grid
+} from '@mui/material';
 import { fetchAllApplications, updateApplicationStatus } from '../../api/apiService'; // Import the API functions
 import { useAuthToken } from '../../context/AuthProvider'; // To fetch admin's token for authorization
 
@@ -61,57 +63,104 @@ const AdminPanel = () => {
   };
 
   if (loading) {
-    return <Typography variant="h6">Loading...</Typography>;
+    return <Typography variant="h6" align="center">Loading...</Typography>;
   }
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
+    <Box sx={{ p: 3, backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
+      <Typography variant="h4" gutterBottom align="center">
         Admin Panel
       </Typography>
-      {error && <Typography color="error">{error}</Typography>}
+      {error && <Typography color="error" align="center">{error}</Typography>}
       {applications.length > 0 ? (
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>User</TableCell>
-                <TableCell>Amount</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Update Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
+        <>
+          {/* Desktop Table View */}
+          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+            <TableContainer component={Paper} sx={{ boxShadow: 3 }}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>User</TableCell>
+                    <TableCell>Amount</TableCell>
+                    <TableCell>Status</TableCell>
+                    <TableCell>Update Status</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {applications.map((app) => (
+                    <TableRow key={app._id}>
+                      <TableCell>{app.submitted_by}</TableCell>
+                      <TableCell>{app.amount}</TableCell>
+                      <TableCell>{app.status}</TableCell>
+                      <TableCell>
+                        <Select
+                          value={statusUpdate[app._id] || app.status}
+                          onChange={(e) => handleStatusChange(app._id, e.target.value)}
+                          sx={{ minWidth: 120 }}
+                        >
+                          <MenuItem value="pending">Pending</MenuItem>
+                          <MenuItem value="approved">Approved</MenuItem>
+                          <MenuItem value="denied">Denied</MenuItem>
+                        </Select>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          sx={{ ml: 2 }}
+                          onClick={() => handleUpdateStatus(app._id)}
+                        >
+                          Update
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+
+          {/* Mobile Card View */}
+          <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+            <Grid container spacing={3}>
               {applications.map((app) => (
-                <TableRow key={app._id}>
-                  <TableCell>{app.submitted_by}</TableCell>
-                  <TableCell>{app.amount}</TableCell>
-                  <TableCell>{app.status}</TableCell>
-                  <TableCell>
-                    <Select
-                      value={statusUpdate[app._id] || app.status}
-                      onChange={(e) => handleStatusChange(app._id, e.target.value)}
-                    >
-                      <MenuItem value="pending">Pending</MenuItem>
-                      <MenuItem value="approved">Approved</MenuItem>
-                      <MenuItem value="denied">Denied</MenuItem>
-                    </Select>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      sx={{ ml: 2 }}
-                      onClick={() => handleUpdateStatus(app._id)}
-                    >
-                      Update
-                    </Button>
-                  </TableCell>
-                </TableRow>
+                <Grid item xs={12} key={app._id}>
+                  <Card sx={{ boxShadow: 3 }}>
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom>
+                        {app.submitted_by}
+                      </Typography>
+                      <Typography variant="body1">
+                        Amount: ${app.amount}
+                      </Typography>
+                      <Typography variant="body1">
+                        Status: {app.status}
+                      </Typography>
+                      <Select
+                        value={statusUpdate[app._id] || app.status}
+                        onChange={(e) => handleStatusChange(app._id, e.target.value)}
+                        fullWidth
+                        sx={{ my: 2 }}
+                      >
+                        <MenuItem value="pending">Pending</MenuItem>
+                        <MenuItem value="approved">Approved</MenuItem>
+                        <MenuItem value="denied">Denied</MenuItem>
+                      </Select>
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        color="primary"
+                        onClick={() => handleUpdateStatus(app._id)}
+                      >
+                        Update Status
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Grid>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            </Grid>
+          </Box>
+        </>
       ) : (
-        <Typography variant="h6" sx={{ mt: 2 }}>
+        <Typography variant="h6" align="center" sx={{ mt: 2 }}>
           No applications found.
         </Typography>
       )}
