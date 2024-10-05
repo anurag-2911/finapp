@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Select, MenuItem, Card, CardContent, Grid
+  Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Select, MenuItem, Card, CardContent, Grid, Pagination
 } from '@mui/material';
 import { fetchAllApplications, updateApplicationStatus } from '../../api/apiService'; // Import the API functions
 import { useAuthToken } from '../../context/AuthProvider'; // To fetch admin's token for authorization
@@ -10,6 +10,7 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
   const [statusUpdate, setStatusUpdate] = useState({}); // Track status updates for each application
+  const [page, setPage] = useState(1); // Pagination state
 
   // Fetch the admin's token
   const token = useAuthToken();
@@ -18,7 +19,7 @@ const AdminPanel = () => {
   useEffect(() => {
     const loadApplications = async () => {
       try {
-        const response = await fetchAllApplications(token); // Fetch applications from the backend
+        const response = await fetchAllApplications(token, page); // Fetch applications from the backend (with pagination)
         const { data } = response; // Extract 'data' which contains the applications
 
         // Ensure we handle the case where data is an array
@@ -36,7 +37,7 @@ const AdminPanel = () => {
       }
     };
     loadApplications();
-  }, [token]);
+  }, [token, page]);
 
   // Handle status update change
   const handleStatusChange = (appId, newStatus) => {
@@ -60,6 +61,10 @@ const AdminPanel = () => {
       console.error('Error updating status:', err);
       alert('Failed to update status');
     }
+  };
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
   };
 
   if (loading) {
@@ -116,6 +121,9 @@ const AdminPanel = () => {
                 </TableBody>
               </Table>
             </TableContainer>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+              <Pagination count={5} page={page} onChange={handlePageChange} />
+            </Box>
           </Box>
 
           {/* Mobile Card View */}
@@ -157,6 +165,9 @@ const AdminPanel = () => {
                 </Grid>
               ))}
             </Grid>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+              <Pagination count={5} page={page} onChange={handlePageChange} />
+            </Box>
           </Box>
         </>
       ) : (
