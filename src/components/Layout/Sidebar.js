@@ -6,6 +6,9 @@ import { UserContext } from '../../context/UserContext';
 
 const Sidebar = () => {
   const { user } = useContext(UserContext);
+  const isUserAdmin = user?.role === 'admin';
+  const isUserTokenValid = user && user.token;
+
 
   return (
     <Box
@@ -21,32 +24,31 @@ const Sidebar = () => {
       }}
     >
       <List>
-        <ListItem button component={Link} to="/dashboard" disabled={!user}>
+        <ListItem button component={Link} to="/dashboard" disabled={!isUserTokenValid}>
           <ListItemIcon sx={{ color: 'white' }}>
             <Dashboard />
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
         </ListItem>
-        <ListItem button component={Link} to="/apply-finance" disabled={!user}>
+        <ListItem button component={Link} to="/apply-finance" disabled={!isUserTokenValid}>
           <ListItemIcon sx={{ color: 'white' }}>
             <MonetizationOn />
           </ListItemIcon>
           <ListItemText primary="Apply for Financing" />
         </ListItem>
-        <ListItem button component={Link} to="/financing-options" disabled={!user}>
+        <ListItem button component={Link} to="/financing-options" disabled={!isUserTokenValid}>
           <ListItemIcon sx={{ color: 'white' }}>
             <AccountBalance />
           </ListItemIcon>
           <ListItemText primary="Financing Options" />
         </ListItem>
-        {user?.role === 'admin' && (
-          <ListItem button component={Link} to="/admin-panel" disabled={!user}>
-            <ListItemIcon sx={{ color: 'white' }}>
-              <Settings />
-            </ListItemIcon>
-            <ListItemText primary="Admin Panel" />
-          </ListItem>
-        )}
+        <ListItem button component={Link} to="/admin-panel" disabled={!isUserAdmin}>
+          <ListItemIcon sx={{ color: 'white' }}>
+            <Settings />
+          </ListItemIcon>
+          <ListItemText primary="Admin Panel" />
+        </ListItem>
+
       </List>
     </Box>
   );

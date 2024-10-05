@@ -21,7 +21,7 @@ function Login() {
       setUser({ token: access_token, role });
 
       // Redirect to the dashboard after successful login
-      console.log('Login successful, navigating to dashboard');
+      console.log('Login successful, navigating to dashboard',role);
       navigate('/dashboard');
 
       setError(null);
