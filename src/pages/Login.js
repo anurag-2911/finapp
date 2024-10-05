@@ -10,7 +10,10 @@ function Login() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
-
+  const { user } = useContext(UserContext);
+  console.log('user state before setUser',  user);
+  console.log('user token before setUser', user.token);
+  console.log('user role before setUser', user.role);
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -19,6 +22,9 @@ function Login() {
       
       // Set user state
       setUser({ token: access_token, role });
+      console.log('user state after setUser', user);
+      console.log('user token after setUser', user.token);
+      console.log('user role after setUser', user.role);
 
       // Redirect to the dashboard after successful login
       console.log('Login successful, navigating to dashboard',role);

@@ -9,7 +9,9 @@ const Sidebar = () => {
   const isUserAdmin = user?.role === 'admin';
   const isUserTokenValid = user && user.token;
 
-
+  console.log('user state in sidebar',   user);
+  console.log('isUserAdmin in sidebar', isUserAdmin);
+  console.log('isUserTokenValid in sidebar', isUserTokenValid);
   return (
     <Box
       sx={{
