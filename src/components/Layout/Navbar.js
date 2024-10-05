@@ -45,7 +45,7 @@ const Navbar = () => {
           </Button>
 
           {/* Show Admin Panel only when the user is an admin */}
-          <Button color="inherit" component={Link} to="/admin-panel" disabled={!isUserAdmin}>
+          <Button color="inherit" component={Link} to="/admin-panel" disabled={!Boolean(isUserAdmin)}>
             Admin Panel
           </Button>
 

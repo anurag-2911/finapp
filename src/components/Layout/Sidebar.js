@@ -52,7 +52,7 @@ const Sidebar = () => {
         </ListItem>
 
         {/* Admin Panel, visible only when the user is an admin */}
-        <ListItem button component={Link} to="/admin-panel" disabled={!isUserAdmin}>
+        <ListItem button component={Link} to="/admin-panel" disabled={!Boolean(isUserAdmin)}>
           <ListItemIcon sx={{ color: 'white' }}>
             <Settings />
           </ListItemIcon>
