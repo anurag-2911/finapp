@@ -24,11 +24,7 @@ const Home = () => {
       description: 'Personal loans for all your needs with flexible repayment options.',
       image: '/images/personalloan.jpg', 
     },
-    {
-      title: 'Business Loans',
-      description: 'Personal loans for all your needs with flexible repayment options.',
-      image: '/images/businessloan.jpg', 
-    },
+   
   ];
 
   return (
