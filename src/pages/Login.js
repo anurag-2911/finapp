@@ -16,7 +16,7 @@ function Login() {
     try {
       const response = await login(username, password);
       const { access_token, role } = response.data;
-  
+      localStorage.setItem('token', access_token);
       // Dispatch the login success action
       dispatch({
         type: 'LOGIN_SUCCESS',
