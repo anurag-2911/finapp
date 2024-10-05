@@ -17,7 +17,14 @@ const AdminPanel = () => {
     const loadApplications = async () => {
       try {
         const data = await fetchAllApplications(token); // Fetch applications from the backend
-        setApplications(data);
+        
+        // Ensure we handle the case where data is not an array
+        if (Array.isArray(data)) {
+          setApplications(data);
+        } else {
+          setApplications([]); // In case of unexpected structure, fallback to empty array
+        }
+
         setLoading(false);
       } catch (err) {
         console.error('Error fetching applications:', err);
@@ -62,45 +69,51 @@ const AdminPanel = () => {
         Admin Panel
       </Typography>
       {error && <Typography color="error">{error}</Typography>}
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>User</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Update Status</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {applications.map((app) => (
-              <TableRow key={app._id}>
-                <TableCell>{app.submitted_by}</TableCell>
-                <TableCell>{app.amount}</TableCell>
-                <TableCell>{app.status}</TableCell>
-                <TableCell>
-                  <Select
-                    value={statusUpdate[app._id] || app.status}
-                    onChange={(e) => handleStatusChange(app._id, e.target.value)}
-                  >
-                    <MenuItem value="pending">Pending</MenuItem>
-                    <MenuItem value="approved">Approved</MenuItem>
-                    <MenuItem value="denied">Denied</MenuItem>
-                  </Select>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{ ml: 2 }}
-                    onClick={() => handleUpdateStatus(app._id)}
-                  >
-                    Update
-                  </Button>
-                </TableCell>
+      {applications.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>User</TableCell>
+                <TableCell>Amount</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Update Status</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {applications.map((app) => (
+                <TableRow key={app._id}>
+                  <TableCell>{app.submitted_by}</TableCell>
+                  <TableCell>{app.amount}</TableCell>
+                  <TableCell>{app.status}</TableCell>
+                  <TableCell>
+                    <Select
+                      value={statusUpdate[app._id] || app.status}
+                      onChange={(e) => handleStatusChange(app._id, e.target.value)}
+                    >
+                      <MenuItem value="pending">Pending</MenuItem>
+                      <MenuItem value="approved">Approved</MenuItem>
+                      <MenuItem value="denied">Denied</MenuItem>
+                    </Select>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      sx={{ ml: 2 }}
+                      onClick={() => handleUpdateStatus(app._id)}
+                    >
+                      Update
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Typography variant="h6" sx={{ mt: 2 }}>
+          No applications found.
+        </Typography>
+      )}
     </Box>
   );
 };
