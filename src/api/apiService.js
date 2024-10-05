@@ -65,3 +65,13 @@ export const fetchFinancingOptions = async () => {
     throw error;
   }
 };
+
+export const applyForFinancing = async (optionId) => {
+  try {
+    const response = await financeApi.post('/select-financing-option', { option_id: optionId });
+    return response.data;
+  } catch (error) {
+    console.error("Error applying for financing:", error);
+    throw error;
+  }
+};
