@@ -84,9 +84,9 @@ const Dashboard = () => {
     <Typography variant="h6" color="textSecondary" align="center" sx={{ mt: 3 }}>
       You have no active finance applications.
       <br />
-      <Button variant="contained" href="/financing-options" sx={{ mt: 2 }}>
-        Explore Financing Options
-      </Button>
+      
+      Explore Financing Options
+      
     </Typography>
   );
 
