@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Box, Typography, Grid, Checkbox, FormControlLabel, Button, TextField } from '@mui/material';
-import { fetchFinancingOptions } from '../../api/apiService';
+import { fetchFinancingOptions, applyForFinance } from '../../api/apiService'; // Import API functions
 
 const FinancingApplication = () => {
-  const [options, setOptions] = useState([]);
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [totalMaxAmount, setTotalMaxAmount] = useState(0);
-  const [neededAmount, setNeededAmount] = useState('');
+  const [options, setOptions] = useState([]); // Available financing options
+  const [selectedOptions, setSelectedOptions] = useState([]); // Selected financing options
+  const [totalMaxAmount, setTotalMaxAmount] = useState(0); // Total amount of selected options
+  const [neededAmount, setNeededAmount] = useState(''); // User input for needed amount
+  const [purpose, setPurpose] = useState(''); // User input for the purpose
+  const [error, setError] = useState(null); // Error handling state
 
+  // Load financing options from backend on component mount
   useEffect(() => {
     const loadOptions = async () => {
-      const data = await fetchFinancingOptions();
-      setOptions(data);
-      const savedSelections = JSON.parse(localStorage.getItem('selectedOptions')) || [];
-      setSelectedOptions(savedSelections);
-      calculateTotalMaxAmount(savedSelections, data);
+      try {
+        const data = await fetchFinancingOptions();
+        setOptions(data);
+        const savedSelections = JSON.parse(localStorage.getItem('selectedOptions')) || [];
+        setSelectedOptions(savedSelections);
+        calculateTotalMaxAmount(savedSelections, data);
+      } catch (error) {
+        console.error("Failed to load financing options:", error);
+        setError('Failed to load financing options');
+      }
     };
-
     loadOptions();
   }, []);
 
+  // Handle selection of a financing option
   const handleSelect = (optionId) => {
     const updatedSelections = selectedOptions.includes(optionId)
       ? selectedOptions.filter(id => id !== optionId)
@@ -30,6 +37,7 @@ const FinancingApplication = () => {
     calculateTotalMaxAmount(updatedSelections, options);
   };
 
+  // Calculate the total max amount of selected financing options
   const calculateTotalMaxAmount = (selectedIds, allOptions) => {
     const total = selectedIds.reduce((sum, id) => {
       const option = allOptions.find(opt => opt._id === id);
@@ -38,24 +46,23 @@ const FinancingApplication = () => {
     setTotalMaxAmount(total);
   };
 
+  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const token = localStorage.getItem('token');
     try {
-      const response = await axios.post('http://<BACKEND_API_URL>/apply-finance', { selectedOptions, neededAmount }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log('Financing application submitted:', response.data);
+      await applyForFinance(selectedOptions, neededAmount, purpose); // Use API service to submit
+      console.log('Financing application submitted successfully');
+      setError(null); // Clear any previous errors
     } catch (err) {
       console.error('Error submitting application:', err);
+      setError('Failed to submit application');
     }
   };
 
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h5">Apply for Financing</Typography>
+      {error && <Typography color="error">{error}</Typography>}
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           {options.map((option) => (
@@ -89,9 +96,11 @@ const FinancingApplication = () => {
           id="purpose"
           name="purpose"
           label="Purpose"
+          value={purpose}
+          onChange={(e) => setPurpose(e.target.value)}
           margin="normal"
         />
-        <Button color="primary" variant="contained" type="submit">
+        <Button color="primary" variant="contained" type="submit" sx={{ mt: 2 }}>
           Submit Application
         </Button>
       </form>

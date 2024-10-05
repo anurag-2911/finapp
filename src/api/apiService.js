@@ -32,8 +32,8 @@ export const signup = async (username, password) => {
 };
 
 // Finance API calls
-export const applyForFinance = async (amount, purpose) => {
-  return await financeApi.post('/apply', { amount, purpose });
+export const applyForFinance = async (loanTypes, amount, purpose) => {
+  return await financeApi.post('/apply-finance', { loan_types: loanTypes, amount, purpose });
 };
 
 export const getFinancingOptions = async () => {
@@ -45,22 +45,13 @@ export const sendNotification = async (user, message) => {
   return await analyticsApi.post('/notify', { user, message });
 };
 
+// Fetch financing options for the application form
 export const fetchFinancingOptions = async () => {
   try {
     const response = await financeApi.get('/financing-options');
     return response.data;
   } catch (error) {
     console.error("Error fetching financing options:", error);
-    throw error;
-  }
-};
-
-export const applyForFinancing = async (optionId) => {
-  try {
-    const response = await financeApi.post('/select-financing-option', { option_id: optionId });
-    return response.data;
-  } catch (error) {
-    console.error("Error applying for financing:", error);
     throw error;
   }
 };
