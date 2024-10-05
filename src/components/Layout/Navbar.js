@@ -24,36 +24,40 @@ const Navbar = () => {
           Finance App
         </Typography>
         <Box>
-          <Button color="inherit" component={Link} to="/">
-            Home
-          </Button>
-
-          {/* Show Login/Signup only when the user is NOT authenticated */}
-          <Button color="inherit" component={Link} to="/login" disabled={isAuthenticated}>
-            Login
-          </Button>
-          <Button color="inherit" component={Link} to="/signup" disabled={isAuthenticated}>
-            Signup
-          </Button>
-
-          {/* Show Dashboard and Financing Options only when the user is authenticated */}
-          <Button color="inherit" component={Link} to="/dashboard" disabled={!isAuthenticated}>
-            Dashboard
-          </Button>
-          <Button color="inherit" component={Link} to="/financing-options" disabled={!isAuthenticated}>
-            Financing Options
-          </Button>
-
-          {/* Show Admin Panel only when the user is an admin */}
-          <Button color="inherit" component={Link} to="/admin-panel" disabled={!Boolean(isUserAdmin)}>
-            Admin Panel
-          </Button>
-
-          {/* Show Logout only when the user is authenticated */}
-          {isAuthenticated && (
-            <Button color="inherit" onClick={handleLogout}>
-              Logout
-            </Button>
+          {/* Show only Admin Panel and Logout for admin users */}
+          {isUserAdmin ? (
+            <>
+              <Button color="inherit" component={Link} to="/admin-panel">
+                Admin Panel
+              </Button>
+              <Button color="inherit" onClick={handleLogout}>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              {/* Non-admin users see other options */}
+              <Button color="inherit" component={Link} to="/">
+                Home
+              </Button>
+              <Button color="inherit" component={Link} to="/login" disabled={isAuthenticated}>
+                Login
+              </Button>
+              <Button color="inherit" component={Link} to="/signup" disabled={isAuthenticated}>
+                Signup
+              </Button>
+              <Button color="inherit" component={Link} to="/dashboard" disabled={!isAuthenticated}>
+                Dashboard
+              </Button>
+              <Button color="inherit" component={Link} to="/financing-options" disabled={!isAuthenticated}>
+                Financing Options
+              </Button>
+              {isAuthenticated && (
+                <Button color="inherit" onClick={handleLogout}>
+                  Logout
+                </Button>
+              )}
+            </>
           )}
         </Box>
       </Toolbar>
