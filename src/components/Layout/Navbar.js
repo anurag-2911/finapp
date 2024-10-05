@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
 
 const Navbar = () => {
-  const isAuthenticated = !!localStorage.getItem('token');
-  const userRole = localStorage.getItem('role');
+  const { user } = useContext(UserContext);
 
   return (
     <AppBar position="fixed" color="primary" sx={{ zIndex: 1201 }}>
@@ -13,25 +13,33 @@ const Navbar = () => {
           Finance App
         </Typography>
         <Box>
-          <Button color="inherit" component={Link} to="/" disabled={!isAuthenticated}>
+          <Button color="inherit" component={Link} to="/">
             Home
           </Button>
-          <Button color="inherit" component={Link} to="/login" disabled={!isAuthenticated}>
-            Login
-          </Button>
-          <Button color="inherit" component={Link} to="/signup" disabled={!isAuthenticated}>
-            Signup
-          </Button>
-          <Button color="inherit" component={Link} to="/dashboard" disabled={isAuthenticated}>
-            Dashboard
-          </Button>
-          <Button color="inherit" component={Link} to="/financing-options" disabled={isAuthenticated}>
-            Financing Options
-          </Button>
-          {userRole === 'admin' && (
-            <Button color="inherit" component={Link} to="/admin-panel" disabled={isAuthenticated}>
-              Admin Panel
-            </Button>
+          {!user && (
+            <>
+              <Button color="inherit" component={Link} to="/login">
+                Login
+              </Button>
+              <Button color="inherit" component={Link} to="/signup">
+                Signup
+              </Button>
+            </>
+          )}
+          {user && (
+            <>
+              <Button color="inherit" component={Link} to="/dashboard">
+                Dashboard
+              </Button>
+              <Button color="inherit" component={Link} to="/financing-options">
+                Financing Options
+              </Button>
+              {user.role === 'admin' && (
+                <Button color="inherit" component={Link} to="/admin-panel">
+                  Admin Panel
+                </Button>
+              )}
+            </>
           )}
         </Box>
       </Toolbar>
