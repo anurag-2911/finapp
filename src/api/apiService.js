@@ -55,3 +55,18 @@ export const fetchFinancingOptions = async () => {
     throw error;
   }
 };
+
+// Fetch user's finance applications using the /status endpoint
+export const fetchUserApplications = async (token) => {
+  try {
+    const response = await financeApi.get('/status', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user applications:', error);
+    throw error;
+  }
+};
