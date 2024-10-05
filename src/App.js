@@ -13,6 +13,7 @@ import NotFound from './pages/NotFound';
 import { Box, CssBaseline, Toolbar } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -23,16 +24,17 @@ function App() {
           <Navbar />
           <Box sx={{ display: 'flex', flexDirection: 'row' }}>
             <Sidebar />
-            <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8 }}> {/* Increased top margin */}
-              {/* Adds spacing for the AppBar */}
-              <Toolbar /> {/* Ensure enough spacing */}
+            <Box component="main" sx={{ flexGrow: 1, p: 3, mt: 8 }}>
+              <Toolbar />
               <Routes>
-                <Route exact path="/" element={<Home />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/apply-finance" element={<FinancingApplication />} />
-                <Route path="/financing-options" element={<FinancingOptions />} />
+                <Route element={<PrivateRoute />}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/apply-finance" element={<FinancingApplication />} />
+                  <Route path="/financing-options" element={<FinancingOptions />} />
+                </Route>
                 <Route path="/admin-panel" element={<AdminPanel />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

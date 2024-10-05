@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // For redirecting after login
-import { login } from '../api/apiService'; 
+import { useNavigate } from 'react-router-dom';
+import { login } from '../api/apiService';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // For navigation
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await login(username, password);
-      const token = response.data.access_token;
+      const { access_token, role } = response.data;
       
-      // Store the token in localStorage or sessionStorage
-      localStorage.setItem('token', token);
+      // Store the token and role in localStorage
+      localStorage.setItem('token', access_token);
+      localStorage.setItem('role', role);
       
       // Redirect to the dashboard after successful login
       console.log('Login successful, navigating to dashboard');
-      navigate('/dashboard'); 
+      navigate('/dashboard');
 
       setError(null);
     } catch (err) {

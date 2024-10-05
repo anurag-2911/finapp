@@ -4,6 +4,8 @@ import { Dashboard, MonetizationOn, AccountBalance, Settings } from '@mui/icons-
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
+  const userRole = localStorage.getItem('role');
+
   return (
     <Box
       sx={{
@@ -13,8 +15,8 @@ const Sidebar = () => {
         color: 'white',
         display: 'flex',
         flexDirection: 'column',
-        paddingTop: '164px', // Adjusted to match AppBar height
-        boxSizing: 'border-box', // Ensure padding is included in height
+        paddingTop: '104px',
+        boxSizing: 'border-box',
       }}
     >
       <List>
@@ -36,12 +38,14 @@ const Sidebar = () => {
           </ListItemIcon>
           <ListItemText primary="Financing Options" />
         </ListItem>
-        <ListItem button component={Link} to="/admin-panel">
-          <ListItemIcon sx={{ color: 'white' }}>
-            <Settings />
-          </ListItemIcon>
-          <ListItemText primary="Admin Panel" />
-        </ListItem>
+        {userRole === 'admin' && (
+          <ListItem button component={Link} to="/admin-panel">
+            <ListItemIcon sx={{ color: 'white' }}>
+              <Settings />
+            </ListItemIcon>
+            <ListItemText primary="Admin Panel" />
+          </ListItem>
+        )}
       </List>
     </Box>
   );
