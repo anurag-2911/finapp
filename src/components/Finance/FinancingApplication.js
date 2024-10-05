@@ -1,18 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { TextField, Button, Box, Typography } from '@mui/material';
-import axios from 'axios';
+import { TextField, Button, Box, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { fetchFinancingOptions } from '../../api/apiService';
 
 const FinancingApplication = () => {
+  const [options, setOptions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+
+  useEffect(() => {
+    const loadOptions = async () => {
+      const data = await fetchFinancingOptions();
+      setOptions(data);
+      const savedSelections = JSON.parse(localStorage.getItem('selectedOptions')) || [];
+      setSelectedOptions(savedSelections);
+    };
+
+    loadOptions();
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       amount: '',
       purpose: '',
+      selectedOption: '',
     },
     validationSchema: Yup.object({
       amount: Yup.number().required('Required'),
       purpose: Yup.string().required('Required'),
+      selectedOption: Yup.string().required('Required'),
     }),
     onSubmit: async (values) => {
       const token = localStorage.getItem('token');
@@ -33,6 +50,23 @@ const FinancingApplication = () => {
     <Box sx={{ p: 3 }}>
       <Typography variant="h5">Apply for Financing</Typography>
       <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="selectedOption-label">Select Option</InputLabel>
+          <Select
+            labelId="selectedOption-label"
+            id="selectedOption"
+            name="selectedOption"
+            value={formik.values.selectedOption}
+            onChange={formik.handleChange}
+            error={formik.touched.selectedOption && Boolean(formik.errors.selectedOption)}
+          >
+            {options.map((option) => (
+              <MenuItem key={option._id} value={option._id} disabled={!selectedOptions.includes(option._id)}>
+                {option.option_name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <TextField
           fullWidth
           id="amount"

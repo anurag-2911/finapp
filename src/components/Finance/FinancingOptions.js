@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Card, CardContent, Grid, Button } from '@mui/material';
-import { fetchFinancingOptions, applyForFinancing } from '../../api/apiService';
+import { Box, Typography, Card, CardContent, Grid, Checkbox, FormControlLabel } from '@mui/material';
+import { fetchFinancingOptions } from '../../api/apiService';
 
 const FinancingOptions = () => {
   const [options, setOptions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -11,6 +12,8 @@ const FinancingOptions = () => {
       try {
         const data = await fetchFinancingOptions();
         setOptions(data);
+        const savedSelections = JSON.parse(localStorage.getItem('selectedOptions')) || [];
+        setSelectedOptions(savedSelections);
       } catch (err) {
         setError("Failed to load financing options");
       }
@@ -19,13 +22,12 @@ const FinancingOptions = () => {
     loadOptions();
   }, []);
 
-  const handleApply = async (optionId) => {
-    try {
-      await applyForFinancing(optionId);
-      alert('Application submitted successfully!');
-    } catch (err) {
-      alert('Failed to submit application.');
-    }
+  const handleSelect = (optionId) => {
+    const updatedSelections = selectedOptions.includes(optionId)
+      ? selectedOptions.filter(id => id !== optionId)
+      : [...selectedOptions, optionId];
+    setSelectedOptions(updatedSelections);
+    localStorage.setItem('selectedOptions', JSON.stringify(updatedSelections));
   };
 
   return (
@@ -40,6 +42,16 @@ const FinancingOptions = () => {
           <Grid item xs={12} sm={6} md={4} key={option._id}>
             <Card>
               <CardContent>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={selectedOptions.includes(option._id)}
+                      onChange={() => handleSelect(option._id)}
+                    />
+                  }
+                  label=""
+                  sx={{ position: 'absolute', top: 8, right: 8 }}
+                />
                 <Typography variant="h5">{option.option_name}</Typography>
                 <Typography variant="body2">{option.description}</Typography>
                 <Typography variant="body2">Interest Rate: {option.interest_rate}%</Typography>
@@ -48,9 +60,6 @@ const FinancingOptions = () => {
                 <Typography variant="body2">
                   Eligibility: Min Income ${option.eligibility_criteria.min_income}, Credit Score {option.eligibility_criteria.credit_score}
                 </Typography>
-                <Button variant="contained" color="primary" onClick={() => handleApply(option._id)}>
-                  Apply
-                </Button>
               </CardContent>
             </Card>
           </Grid>
