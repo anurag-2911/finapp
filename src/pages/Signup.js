@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField, Typography, Alert, Tooltip, InputAdornment, IconButton } from '@mui/material';
+import { Box, Button, TextField, Typography, Alert, Tooltip, InputAdornment, IconButton, Grid, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // For redirecting after successful signup
 import { signup } from '../api/apiService'; // API call for signup
 import InfoIcon from '@mui/icons-material/Info';
@@ -61,34 +61,16 @@ function Signup() {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#f4f6f8',
-        padding: '20px',
-      }}
-    >
-      <Box
-        sx={{
-          width: { xs: '100%', sm: '400px' },
-          backgroundColor: 'white',
-          boxShadow: 3,
-          borderRadius: 2,
-          padding: 4,
-          textAlign: 'center',
-        }}
-      >
+    <Box sx={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f4f6f8', p: 3 }}>
+      <Paper elevation={6} sx={{ width: { xs: '100%', sm: '400px' }, p: 4, textAlign: 'center', borderRadius: 2 }}>
         <Typography variant="h4" gutterBottom>
           Sign Up
         </Typography>
-        
+
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
         {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-        
-        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+
+        <form onSubmit={handleSubmit}>
           {/* Username Field with Tooltip */}
           <Tooltip title="Enter your preferred username. It's case-sensitive." arrow>
             <TextField
@@ -175,7 +157,7 @@ function Signup() {
             Sign Up
           </Button>
         </form>
-      </Box>
+      </Paper>
     </Box>
   );
 }
