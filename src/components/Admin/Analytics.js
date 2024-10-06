@@ -46,7 +46,7 @@ const Analytics = () => {
     if (error) return <Typography color="error">{error}</Typography>;
 
     return (
-        <Box sx={{ p: 3,mt: -2 }}>
+        <Box sx={{ p: 3,mt: -4 }}>
             <Typography variant="h4" gutterBottom>Admin Analytics Dashboard</Typography>
 
             {/* Metrics Overview */}
@@ -123,7 +123,7 @@ const Analytics = () => {
                 </Table>
             </TableContainer>
 
-            {/* Financing Checks per User */}
+            Financing Checks per User
             <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>Financing Checks Per User</Typography>
             <List>
                 {Object.keys(analyticsData.financing_checks_per_user).map((user) => (
