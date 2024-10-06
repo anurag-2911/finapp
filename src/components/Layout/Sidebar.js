@@ -37,6 +37,14 @@ const Sidebar = () => {
               </ListItemIcon>
               <ListItemText primary="Admin Panel" />
             </ListItem>
+            
+            <ListItem button component={Link} to="/analytics">
+              <ListItemIcon sx={{ color: 'white' }}>
+                <Settings />
+              </ListItemIcon>
+              <ListItemText primary="Analytics" />
+            </ListItem>
+
           </>
         ) : (
           <>
