@@ -74,7 +74,7 @@ export const fetchUserApplications = async (token) => {
 // Fetch all applications (paginated if needed)
 export const fetchAllApplications = async (token) => {
   try {
-    const response = await axios.get('/admin/applications', {
+    const response = await axios.get('/applications', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -89,7 +89,7 @@ export const fetchAllApplications = async (token) => {
 // Update application status
 export const updateApplicationStatus = async (appId, newStatus, token) => {
   try {
-    const response = await axios.put(`/admin/update_status/${appId}/${newStatus}`, {}, {
+    const response = await axios.put(`/update_status/${appId}/${newStatus}`, {}, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -100,3 +100,16 @@ export const updateApplicationStatus = async (appId, newStatus, token) => {
     throw error;
   }
 };
+
+// Add this function to fetch analytics data
+export const fetchAnalyticsData = async () => {
+  try {
+    const response = await analyticsApi.get('/analytics');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching analytics data:', error);
+    throw error;
+  }
+};
+
+
