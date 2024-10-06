@@ -46,7 +46,7 @@ const Analytics = () => {
     if (error) return <Typography color="error">{error}</Typography>;
 
     return (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 3,mt: -2 }}>
             <Typography variant="h4" gutterBottom>Admin Analytics Dashboard</Typography>
 
             {/* Metrics Overview */}
