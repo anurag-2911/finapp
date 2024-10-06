@@ -119,7 +119,13 @@ const AdminPanel = () => {
   }
 
   return (
-    <Box sx={{ p: 4 }}>
+    <Box
+      sx={{
+        p: 4,
+        height: '80vh',  // Adjust the height so it takes up most of the viewport
+        overflow: 'auto', // Enable scrolling for both axes
+      }}
+    >
       <Typography variant="h3" sx={{ mb: 4, fontWeight: 'bold' }}>
         Admin Panel
       </Typography>
@@ -129,8 +135,16 @@ const AdminPanel = () => {
         </Typography>
       )}
       {applications.length > 0 ? (
-        <TableContainer component={Paper} sx={{ borderRadius: 4, boxShadow: 3 }}>
-          <Table sx={{ minWidth: 700 }}>
+        <TableContainer
+          component={Paper}
+          sx={{
+            borderRadius: 4,
+            boxShadow: 3,
+            maxHeight: '60vh', // Limits the height of the table, enabling vertical scroll
+            maxWidth: '100%',  // Ensures it doesn't overflow horizontally
+          }}
+        >
+          <Table stickyHeader sx={{ minWidth: 700 }}>
             <TableHead>
               <TableRow>
                 <TableCell>
