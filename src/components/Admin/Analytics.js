@@ -6,16 +6,21 @@ import {
     Grid,
     Card,
     CardContent,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
     List,
     ListItem,
     ListItemText,
-    LinearProgress
 } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 import LoginIcon from '@mui/icons-material/Person';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { fetchAnalyticsData } from '../../api/apiService';
-import { CircularProgressWithLabel } from '../Shared/CircularProgressWithLabel';
 
 const Analytics = () => {
     const [analyticsData, setAnalyticsData] = useState(null);
@@ -39,9 +44,6 @@ const Analytics = () => {
 
     if (loading) return <CircularProgress />;
     if (error) return <Typography color="error">{error}</Typography>;
-
-    // Calculate max logins to normalize progress bar values
-    const maxLogins = Math.max(...Object.values(analyticsData.logins_per_user));
 
     return (
         <Box sx={{ p: 3 }}>
@@ -98,23 +100,28 @@ const Analytics = () => {
                 </Grid>
             </Grid>
 
-            {/* Logins per User */}
+            {/* Logins per User Table */}
             <Typography variant="h5" gutterBottom>Logins Per User</Typography>
-            <Grid container spacing={3}>
-                {Object.keys(analyticsData.logins_per_user).map((user) => (
-                    <Grid item xs={12} sm={6} md={4} key={user}>
-                        <Card sx={{ boxShadow: 3 }}>
-                            <CardContent>
-                                <Typography variant="h6">{user}</Typography>
-                                <CircularProgressWithLabel
-                                    value={(analyticsData.logins_per_user[user] / maxLogins) * 100}
-                                    label={`${analyticsData.logins_per_user[user]} logins`}
-                                />
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
+            <TableContainer component={Paper} sx={{ maxHeight: 400, overflow: 'auto' }}>
+                <Table stickyHeader aria-label="sticky table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>User</TableCell>
+                            <TableCell align="right">Logins</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {Object.keys(analyticsData.logins_per_user).map((user) => (
+                            <TableRow key={user}>
+                                <TableCell component="th" scope="row">
+                                    {user}
+                                </TableCell>
+                                <TableCell align="right">{analyticsData.logins_per_user[user]}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
 
             {/* Financing Checks per User */}
             <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>Financing Checks Per User</Typography>
