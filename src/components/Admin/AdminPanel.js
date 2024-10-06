@@ -122,6 +122,7 @@ const AdminPanel = () => {
     <Box
       sx={{
         p: 4,
+        mt: -4,
         height: '80vh',  // Adjust the height so it takes up most of the viewport
         overflow: 'auto', // Enable scrolling for both axes
       }}
