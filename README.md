@@ -21,7 +21,7 @@ This documentation covers the concepts used, features and use cases, component s
 8. [Kubernetes Deployment](#kubernetes-deployment)
    - [Dockerization](#dockerization)
    - [Kubernetes Manifests](#kubernetes-manifests)
-9. [Conclusion](#conclusion)
+9. [Summary](#summary)
 
 ---
 
