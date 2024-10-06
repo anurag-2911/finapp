@@ -142,7 +142,7 @@ This documentation covers the concepts used, features and use cases, component s
 ### Data Fetching and Error Handling
 
 - **Async/Await**: Used for handling promises in API calls.
-- **Error States**: Managed using local state to provide feedback to the user.
+- **Error States**: Managed using the local state to provide feedback to the user.
 
 ---
 
@@ -387,14 +387,14 @@ spec:
 
 ---
 
-## Conclusion
+## Summary
 
 The FinApp frontend application is a robust, scalable, and user-friendly interface that complements the microservices architecture of the backend. By integrating modern web development practices with automated deployment pipelines and container orchestration, FinApp ensures:
 
 - **Efficient Development and Deployment**: Streamlined CI/CD processes reduce time to market.
 - **Scalability and Reliability**: Kubernetes handles scaling and resilience, ensuring high availability.
 - **Security**: Role-based access control and secure communication with backend services.
-- **Maintainability**: Modular codebase with clear separation of concerns facilitates easier updates and feature additions.
+- **Maintainability**: Modular codebase with a clear separation of concerns facilitates easier updates and feature additions.
 
 ---
 
