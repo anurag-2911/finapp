@@ -89,6 +89,18 @@ const AdminPanel = () => {
   // Sorting applications based on selected column and direction
   const sortedApplications = applications.slice().sort((a, b) => {
     const direction = sortConfig.direction === 'asc' ? 1 : -1;
+
+    // Numeric sorting for the 'amount' field
+    if (sortConfig.key === 'amount') {
+      return (a.amount - b.amount) * direction;
+    }
+
+    // Status sorting (ensure consistent comparison for strings)
+    if (sortConfig.key === 'status') {
+      return a.status.localeCompare(b.status) * direction;
+    }
+
+    // Default: Sorting by string for 'submitted_by' or other fields
     if (a[sortConfig.key] < b[sortConfig.key]) {
       return -1 * direction;
     }
