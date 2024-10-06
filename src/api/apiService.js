@@ -74,7 +74,7 @@ export const fetchUserApplications = async (token) => {
 // Fetch all applications (paginated if needed)
 export const fetchAllApplications = async (token) => {
   try {
-    const response = await axios.get('/applications', {
+    const response = await axios.get('/admin/applications', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -89,7 +89,7 @@ export const fetchAllApplications = async (token) => {
 // Update application status
 export const updateApplicationStatus = async (appId, newStatus, token) => {
   try {
-    const response = await axios.put(`/update_status/${appId}/${newStatus}`, {}, {
+    const response = await axios.put(`/admin/update_status/${appId}/${newStatus}`, {}, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
