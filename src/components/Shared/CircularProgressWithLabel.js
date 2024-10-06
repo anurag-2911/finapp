@@ -4,7 +4,11 @@ import { CircularProgress, Box, Typography } from '@mui/material';
 export const CircularProgressWithLabel = (props) => {
   return (
     <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <CircularProgress variant="determinate" {...props} />
+      <CircularProgress 
+        variant="determinate" 
+        {...props} 
+        sx={{ color: '#3f51b5' }}  
+      />
       <Box
         sx={{
           top: 0,
@@ -17,7 +21,12 @@ export const CircularProgressWithLabel = (props) => {
           justifyContent: 'center',
         }}
       >
-        <Typography variant="caption" component="div" color="textSecondary">
+        <Typography 
+          variant="caption" 
+          component="div" 
+          color="textPrimary" 
+          sx={{ fontSize: '1rem', fontWeight: 'bold' }}  
+        >
           {props.label}
         </Typography>
       </Box>
