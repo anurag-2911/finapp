@@ -33,7 +33,7 @@ function Signup() {
       // Call the signup API
       const response = await signup(username, password);
       setSuccess('Signup successful! You can now log in.');
-      
+
       // Allow login after successful signup
       setTimeout(() => {
         navigate('/login');
@@ -53,10 +53,10 @@ function Signup() {
       <Typography variant="h4" gutterBottom>
         Sign Up
       </Typography>
-      
+
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
       {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-      
+
       <form onSubmit={handleSubmit}>
         <TextField
           label="Username"

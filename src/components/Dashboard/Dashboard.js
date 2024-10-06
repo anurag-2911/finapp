@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Grid, Card, CardContent,Button } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Button } from '@mui/material';
 import { fetchUserApplications, fetchFinancingOptions } from '../../api/apiService'; // Import both API services
 import { useAuthToken } from '../../context/AuthProvider'; // Import to get the current user's token
 
@@ -84,9 +84,9 @@ const Dashboard = () => {
     <Typography variant="h6" color="textSecondary" align="center" sx={{ mt: 3 }}>
       You have no active finance applications.
       <br />
-      
+
       Explore Financing Options
-      
+
     </Typography>
   );
 
