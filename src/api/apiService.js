@@ -100,3 +100,16 @@ export const updateApplicationStatus = async (appId, newStatus, token) => {
     throw error;
   }
 };
+
+// Add this function to fetch analytics data
+export const fetchAnalyticsData = async () => {
+  try {
+    const response = await analyticsApi.get('/analytics');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching analytics data:', error);
+    throw error;
+  }
+};
+
+

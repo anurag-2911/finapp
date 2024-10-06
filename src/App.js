@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import FinancingApplication from './components/Finance/FinancingApplication';
 import FinancingOptions from './components/Finance/FinancingOptions';
 import AdminPanel from './components/Admin/AdminPanel';
+import Analytics from './components/Admin/Analytics';
 import NotFound from './pages/NotFound';
 import { Box, CssBaseline, Toolbar } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
@@ -38,9 +39,13 @@ function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/apply-finance" element={<FinancingApplication />} />
                     <Route path="/financing-options" element={<FinancingOptions />} />
-                    <Route path="/admin-panel" element={<AdminPanel />} />
                   </Route>
 
+                  {/* Admin-only routes */}
+                  <Route element={<PrivateRoute adminOnly={true} />}>
+                    <Route path="/admin-panel" element={<AdminPanel />} />
+                    <Route path="/analytics" element={<Analytics />} />
+                  </Route>
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Box>
