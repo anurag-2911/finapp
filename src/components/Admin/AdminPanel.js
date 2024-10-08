@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Box,
   Typography,
@@ -15,12 +15,18 @@ import {
   Grid,
   CircularProgress,
   TableSortLabel,
+  Avatar,
+  IconButton,
+  Menu,
+  MenuItem as MuiMenuItem
 } from '@mui/material';
 import { fetchAllApplications, updateApplicationStatus } from '../../api/apiService';
 import { useAuthToken } from '../../context/AuthProvider';
+import { AuthContext } from '../../context/AuthProvider'; // Import AuthContext
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const AdminPanel = () => {
   const [applications, setApplications] = useState([]); // Store all applications
@@ -28,7 +34,9 @@ const AdminPanel = () => {
   const [error, setError] = useState(null); // Error state
   const [statusUpdate, setStatusUpdate] = useState({}); // Track status updates for each application
   const [sortConfig, setSortConfig] = useState({ key: 'submitted_by', direction: 'asc' }); // Sorting config state
+  const [anchorEl, setAnchorEl] = useState(null); // State for avatar menu
 
+  const { state, dispatch } = useContext(AuthContext); // Access user state
   const token = useAuthToken();
 
   // Fetch all applications on component mount
@@ -110,6 +118,20 @@ const AdminPanel = () => {
     return 0;
   });
 
+  const handleAvatarMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleAvatarMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch({ type: 'LOGOUT' });
+    setAnchorEl(null);
+    // Navigate to login page or handle logout logic
+  };
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
@@ -127,9 +149,31 @@ const AdminPanel = () => {
         overflow: 'auto', // Enable scrolling for both axes
       }}
     >
-      <Typography variant="h3" sx={{ mb: 4, fontWeight: 'bold' }}>
-        Admin Panel
-      </Typography>
+      {/* Header with Admin Name and Avatar */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+        <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
+          Admin Panel
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography variant="h6" sx={{ mr: 2 }}>
+            {state?.username || 'Admin'}
+          </Typography>
+          <IconButton onClick={handleAvatarMenuOpen}>
+            <Avatar>
+              {state?.username ? state.username[0].toUpperCase() : <AccountCircleIcon />}
+            </Avatar>
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleAvatarMenuClose}
+            keepMounted
+          >
+            <MuiMenuItem onClick={handleLogout}>Logout</MuiMenuItem>
+          </Menu>
+        </Box>
+      </Box>
+
       {error && (
         <Typography color="error" sx={{ mb: 2 }}>
           {error}

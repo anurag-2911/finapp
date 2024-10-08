@@ -4,6 +4,7 @@
 export const initialState = {
   isAuthenticated: false,
   token: null,
+  username: null,
   role: null,
 };
 
@@ -15,7 +16,8 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         token: action.payload.token,
-        role: action.payload.role,
+        username: action.payload.username, // Store username
+        role: action.payload.role, // Store role
       };
     case 'LOGOUT':
       localStorage.clear(); // Clear localStorage on logout
@@ -23,6 +25,7 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: false,
         token: null,
+        username: null,
         role: null,
       };
     default:

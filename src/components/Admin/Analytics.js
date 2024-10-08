@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
     Box,
     Typography,
@@ -13,19 +13,19 @@ import {
     TableHead,
     TableRow,
     Paper,
-    List,
-    ListItem,
-    ListItemText,
+    Avatar,
 } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 import LoginIcon from '@mui/icons-material/Person';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { fetchAnalyticsData } from '../../api/apiService';
+import { UserContext } from '../../context/UserContext'; // Import UserContext for avatar handling
 
 const Analytics = () => {
     const [analyticsData, setAnalyticsData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { user } = useContext(UserContext); // Access user data
 
     useEffect(() => {
         const fetchData = async () => {
@@ -113,7 +113,8 @@ const Analytics = () => {
                     <TableBody>
                         {Object.keys(analyticsData.logins_per_user).map((user) => (
                             <TableRow key={user}>
-                                <TableCell component="th" scope="row">
+                                <TableCell component="th" scope="row" sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <Avatar src={analyticsData.users[user]?.avatar || ''} alt={user} sx={{ mr: 2 }} />
                                     {user}
                                 </TableCell>
                                 <TableCell align="right">{analyticsData.logins_per_user[user]}</TableCell>
