@@ -1,0 +1,105 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: finapp-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"  # Use the ClusterIssuer
+    
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - appsxyzabc.com
+        - green.appsxyzabc.com  # Subdomain for testing green deployment
+      secretName: appsxyzabc-tls  
+  rules:
+    - host: appsxyzabc.com
+      http:
+        paths:
+          - path: /login
+            pathType: Exact
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 8001
+          - path: /signup
+            pathType: Exact
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 8001
+          - path: /analytics
+            pathType: Exact
+            backend:
+              service:
+                name: analytics-service
+                port:
+                  number: 8004
+          - path: /apply
+            pathType: Exact
+            backend:
+              service:
+                name: finance-service
+                port:
+                  number: 8002
+          - path: /apply-finance  
+            pathType: Exact
+            backend:
+              service:
+                name: finance-service
+                port:
+                  number: 8002
+          - path: /status
+            pathType: Prefix
+            backend:
+              service:
+                name: finance-service
+                port:
+                  number: 8002
+          - path: /admin/update_status
+            pathType: Prefix
+            backend:
+              service:
+                name: finance-service
+                port:
+                  number: 8002
+          - path: /dashboard-info
+            pathType: Exact
+            backend:
+              service:
+                name: finance-service
+                port:
+                  number: 8002
+          - path: /financing-options
+            pathType: Exact
+            backend:
+              service:
+                name: finance-service
+                port:
+                  number: 8002
+          - path: /admin/applications
+            pathType: Exact
+            backend:
+              service:
+                name: finance-service
+                port:
+                  number: 8002
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: finapp-service
+                port:
+                  number: 80
+    - host: green.appsxyzabc.com  # Traffic for green deployment
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: finapp-ui-green
+                port:
+                  number: 80  
