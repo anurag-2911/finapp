@@ -27,10 +27,6 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
-          context: ./  # Path to your Dockerfile and context
+          context: ./  # Path to the Dockerfile and context
           push: true
-          tags: |
-            anurag2911/finapp:latest   # Latest tag
-            anurag2911/finapp:green    # Green tag
-
-      
+          tags: anurag2911/finapp:latest,anurag2911/finapp:green  
