@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Box, Typography, Grid, Card, CardContent, Avatar } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Grid, Card, CardContent, Avatar, Button } from '@mui/material';
 import { fetchUserApplications, fetchFinancingOptions } from '../../api/apiService'; // Import both API services
 import { useAuthToken } from '../../context/AuthProvider'; // Import to get the current user's token
-import { UserContext } from '../../context/UserContext'; // Import UserContext for avatar and username
+import { useUserAvatar, useUsername, useUpdateAvatar } from '../../context/UserContext'; // Import the hooks
 
 const Dashboard = () => {
   const [applications, setApplications] = useState([]); // Store user applications
@@ -12,8 +12,9 @@ const Dashboard = () => {
 
   // Get the current user's token (this assumes you have a token-based authentication)
   const token = useAuthToken();
-  const { user } = useContext(UserContext); // Access avatar and username from UserContext
-  console.log('User data in Dashboard:', user);
+  const avatar = useUserAvatar(); // Get the current avatar
+  const username = useUsername(); // Get the current username
+  const updateAvatar = useUpdateAvatar(); // Hook to update avatar
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -35,6 +36,12 @@ const Dashboard = () => {
     };
     loadDashboardData();
   }, [token]);
+
+  const handleAvatarUpdate = () => {
+    
+    const newAvatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=random`;
+    updateAvatar(newAvatarUrl);
+  };
 
   // Helper function to map loan type IDs to loan option names
   const getLoanTypeNames = (loanTypeIds) => {
@@ -96,13 +103,14 @@ const Dashboard = () => {
       {/* Display user avatar and username */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
         <Avatar
-          src={user.avatar} // Avatar URL from UserContext
-          alt={user.username}
+          src={avatar} // Avatar URL from UserContext
+          alt={username}
           sx={{ width: 64, height: 64, mr: 2 }}
         />
         <Typography variant="h5">
-          Welcome, {user.username}
+          Welcome, {username}
         </Typography>
+        <Button onClick={handleAvatarUpdate} sx={{ ml: 2 }}>Update Avatar</Button> {/* Button to update avatar */}
       </Box>
 
       <Typography variant="h4" gutterBottom>

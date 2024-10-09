@@ -2,18 +2,17 @@ import React, { useContext } from 'react';
 import { Box, List, ListItem, ListItemIcon, ListItemText, Avatar, Typography } from '@mui/material';
 import { Dashboard, MonetizationOn, AccountBalance, Settings } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthProvider'; // Import AuthContext
-import { UserContext } from '../../context/UserContext';  // Import UserContext
+import { AuthContext } from '../../context/AuthProvider'; 
+import { UserContext } from '../../context/UserContext';  
 
 const Sidebar = () => {
   const { state } = useContext(AuthContext); // Access global authentication state
   const { user } = useContext(UserContext); // Access user data, including avatar and username
-  const isUserAdmin = state.role === 'admin'; // Check if the user is an admin
-  const isAuthenticated = state.isAuthenticated; // Check if the user is authenticated
+  
+  const isUserAdmin = state?.role === 'admin'; // Check if the user is an admin
+  const isAuthenticated = state?.isAuthenticated; // Check if the user is authenticated
 
   console.log('Auth state in sidebar', state);
-  console.log('isUserAdmin in sidebar', isUserAdmin);
-  console.log('isAuthenticated in sidebar', isAuthenticated);
   console.log('User data in sidebar', user);
 
   return (
@@ -29,7 +28,6 @@ const Sidebar = () => {
         boxSizing: 'border-box',
       }}
     >
-      {/* Avatar and Username Display */}
       {isAuthenticated && (
         <Box
           sx={{
@@ -41,19 +39,17 @@ const Sidebar = () => {
           }}
         >
           <Avatar
-            src={user.avatar}  // User avatar URL
-            alt={user.username}
+            src={user?.avatar}  // User avatar URL
+            alt={user?.username}
             sx={{ width: 80, height: 80, mb: 2 }}
           />
-          <Typography variant="h6">{user.username}</Typography>
+          <Typography variant="h6">{user?.username}</Typography>
         </Box>
       )}
 
       <List>
-        {/* Conditionally render only Admin Panel for admin users */}
         {isUserAdmin ? (
           <>
-            {/* Admin Panel, visible only when the user is an admin */}
             <ListItem button component={Link} to="/admin-panel">
               <ListItemIcon sx={{ color: 'white' }}>
                 <Settings />
@@ -70,7 +66,6 @@ const Sidebar = () => {
           </>
         ) : (
           <>
-            {/* Non-admin users see other options */}
             <ListItem button component={Link} to="/dashboard" disabled={!isAuthenticated}>
               <ListItemIcon sx={{ color: 'white' }}>
                 <Dashboard />

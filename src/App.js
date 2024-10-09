@@ -19,6 +19,7 @@ import { AuthProvider } from './context/AuthProvider';
 import { UserProvider } from './context/UserContext';  
 
 function App() {
+  
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider> {/* Wrap the app with AuthProvider for global authentication state */}
