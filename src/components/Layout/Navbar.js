@@ -6,9 +6,13 @@ import { UserContext } from '../../context/UserContext'; // Import UserContext f
 
 const Navbar = () => {
   const { state, dispatch } = useContext(AuthContext); // Access global authentication state and dispatch
-  const { user } = useContext(UserContext); // Access user data (username and avatar)
-  const isUserAdmin = state.role === 'admin'; // Check if the user is an admin
-  const isAuthenticated = state.isAuthenticated; // Check if the user is authenticated
+  const userContext = useContext(UserContext); // Ensure UserContext exists before destructuring
+
+  // Check if userContext exists and contains the user
+  const user = userContext ? userContext.user : null;
+  
+  const isUserAdmin = state?.role === 'admin'; // Check if the user is an admin
+  const isAuthenticated = state?.isAuthenticated; // Check if the user is authenticated
 
   console.log('Auth state in navbar', state);
   console.log('isUserAdmin in navbar', isUserAdmin);
@@ -28,7 +32,7 @@ const Navbar = () => {
         </Typography>
 
         {/* Display Avatar and Username if authenticated */}
-        {isAuthenticated && (
+        {isAuthenticated && user && (
           <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
             <Avatar src={user.avatar} alt={user.username} sx={{ mr: 1 }} />
             <Typography variant="body1">{user.username}</Typography>
