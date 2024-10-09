@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL from environment or fallback to localhost
-const baseURL = window.env.REACT_APP_BACKEND_URL || "http://localhost:3000";
+const baseURL = "https://appsxyzabc.com" ;
 
 // Create Axios instances for different services
 const authApi = axios.create({ baseURL });

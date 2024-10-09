@@ -16,7 +16,8 @@ spec:
     spec:
       containers:
         - name: finapp-container
-          image: anurag2911/finapp:latest  
+          image: anurag2911/finapp:latest
+          imagePullPolicy: Always  
           ports:
             - containerPort: 80  
           resources:
