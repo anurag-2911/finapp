@@ -19,7 +19,8 @@ spec:
     spec:
       containers:
         - name: finapp-container
-          image: anurag2911/finapp:green  # Ensure the image is tagged for the green version
+          image: anurag2911/finapp:green-v2  # Ensure the image is tagged for the green version
+          imagePullPolicy: Always
           ports:
             - containerPort: 80  
           env:
