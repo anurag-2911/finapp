@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, Grid, Card, CardContent, Button } from '@mui/material';
+import React, { useState, useEffect, useContext } from 'react';
+import { Box, Typography, Grid, Card, CardContent, Avatar } from '@mui/material';
 import { fetchUserApplications, fetchFinancingOptions } from '../../api/apiService'; // Import both API services
 import { useAuthToken } from '../../context/AuthProvider'; // Import to get the current user's token
+import { UserContext } from '../../context/UserContext'; // Import UserContext for avatar and username
 
 const Dashboard = () => {
   const [applications, setApplications] = useState([]); // Store user applications
@@ -11,6 +12,7 @@ const Dashboard = () => {
 
   // Get the current user's token (this assumes you have a token-based authentication)
   const token = useAuthToken();
+  const { user } = useContext(UserContext); // Access avatar and username from UserContext
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -84,14 +86,24 @@ const Dashboard = () => {
     <Typography variant="h6" color="textSecondary" align="center" sx={{ mt: 3 }}>
       You have no active finance applications.
       <br />
-
       Explore Financing Options
-
     </Typography>
   );
 
   return (
     <Box sx={{ p: 3 }}>
+      {/* Display user avatar and username */}
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+        <Avatar
+          src={user.avatar} // Avatar URL from UserContext
+          alt={user.username}
+          sx={{ width: 64, height: 64, mr: 2 }}
+        />
+        <Typography variant="h5">
+          Welcome, {user.username}
+        </Typography>
+      </Box>
+
       <Typography variant="h4" gutterBottom>
         Your Finance Applications
       </Typography>
