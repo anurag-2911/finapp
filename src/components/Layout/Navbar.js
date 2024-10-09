@@ -6,10 +6,12 @@ import { UserContext } from '../../context/UserContext'; // Import UserContext f
 
 const Navbar = () => {
   const { state, dispatch } = useContext(AuthContext); // Access global authentication state and dispatch
-  const userContext = useContext(UserContext); // Ensure UserContext exists before destructuring
+  // const userContext = useContext(UserContext); // Ensure UserContext exists before destructuring
+  const { user = {} } = useContext(UserContext) || {};
+
 
   // Check if userContext exists and contains the user
-  const user = userContext ? userContext.user : null;
+  // const user = userContext ? userContext.user : null;
   
   const isUserAdmin = state?.role === 'admin'; // Check if the user is an admin
   const isAuthenticated = state?.isAuthenticated; // Check if the user is authenticated

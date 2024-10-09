@@ -7,7 +7,9 @@ import { UserContext } from '../../context/UserContext';
 
 const Sidebar = () => {
   const { state } = useContext(AuthContext); // Access global authentication state
-  const { user } = useContext(UserContext); // Access user data, including avatar and username
+  // const { user } = useContext(UserContext); // Access user data, including avatar and username
+  const { user = {} } = useContext(UserContext) || {};
+
   
   const isUserAdmin = state?.role === 'admin'; // Check if the user is an admin
   const isAuthenticated = state?.isAuthenticated; // Check if the user is authenticated
