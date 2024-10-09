@@ -32,13 +32,18 @@ function Login() {
         payload: { token: access_token, role, username }
       });
 
-      // Set the user information in UserContext with generated avatar
+      // Generate the avatar and set the user information in UserContext
+      const avatarUrl = generateAvatar(username);
+      console.log('Generated avatar URL:', avatarUrl);
+
       setUser({
         token: access_token,
         role,
         username,
-        avatar: generateAvatar(username),  // Generate avatar based on username
+        avatar: avatarUrl,  // Set the avatar
       });
+
+      console.log('User info after login:', { token: access_token, role, username, avatar: avatarUrl });
 
       setError(null);
 

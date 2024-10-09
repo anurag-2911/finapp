@@ -13,6 +13,7 @@ const Dashboard = () => {
   // Get the current user's token (this assumes you have a token-based authentication)
   const token = useAuthToken();
   const { user } = useContext(UserContext); // Access avatar and username from UserContext
+  console.log('User data in Dashboard:', user);
 
   useEffect(() => {
     const loadDashboardData = async () => {
