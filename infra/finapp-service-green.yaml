@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: finappbeta-ui
+  labels:
+    app: finappbeta
+spec:
+  replicas: 1  
+  selector:
+    matchLabels:
+      app: finappbeta
+  template:
+    metadata:
+      labels:
+        app: finappbeta
+    spec:
+      containers:
+        - name: finappbeta-container
+          image: anurag2911/finappbeta:latest
+          imagePullPolicy: Always  
+          ports:
+            - containerPort: 80  
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+          env:             
+            - name: REACT_APP_BACKEND_URL
+              value: "http://beta.appsxyzabc.com" 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: finappbeta-service
+spec:
+  selector:
+    app: finappbeta
+  ports:
+    - protocol: TCP
+      port: 80  # Exposing the port used by the container
+      targetPort: 80
+  type: ClusterIP

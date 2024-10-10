@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, Checkbox, FormControlLabel, Button, TextField } from '@mui/material';
-import { fetchFinancingOptions, applyForFinance } from '../../api/apiService'; // Import API functions
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { fetchFinancingOptions, applyForFinance } from '../../api/apiService';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthProvider';
 
 const FinancingApplication = () => {
   const [options, setOptions] = useState([]); // Available financing options
@@ -13,7 +14,7 @@ const FinancingApplication = () => {
   const [success, setSuccess] = useState(false); // Success message state
 
   const navigate = useNavigate(); // Initialize navigate
-
+  const { username } = useAuth();
   // Load financing options from backend on component mount
   useEffect(() => {
     const loadOptions = async () => {
@@ -71,6 +72,17 @@ const FinancingApplication = () => {
 
   return (
     <Box sx={{ p: 3 }}>
+      <Typography
+        variant="h6"
+        gutterBottom
+        sx={{
+          fontWeight: 'bold',
+          textAlign: 'center',
+          mb: 2,
+        }}
+      >
+        Welcome, {username}!
+      </Typography>
       <Typography variant="h5">Apply for Financing</Typography>
       {error && <Typography color="error">{error}</Typography>}
       {success && <Typography color="primary">Application submitted successfully! Redirecting to dashboard...</Typography>}

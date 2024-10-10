@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Card, CardContent, Grid, Checkbox, FormControlLabel } from '@mui/material';
 import { fetchFinancingOptions } from '../../api/apiService';
+import { useAuth } from '../../context/AuthProvider';
 
 const FinancingOptions = () => {
   const [options, setOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [error, setError] = useState(null);
-
+  const { username } = useAuth();
   useEffect(() => {
     const loadOptions = async () => {
       try {
@@ -32,6 +33,17 @@ const FinancingOptions = () => {
 
   return (
     <Box sx={{ p: 3 }}>
+      <Typography
+        variant="h6"
+        gutterBottom
+        sx={{
+          fontWeight: 'bold',
+          textAlign: 'center',
+          mb: 2,
+        }}
+      >
+        Welcome, {username}!
+      </Typography>
       <Typography variant="h4" gutterBottom>
         Financing Options
       </Typography>

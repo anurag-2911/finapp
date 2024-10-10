@@ -21,12 +21,13 @@ import EventIcon from '@mui/icons-material/Event';
 import LoginIcon from '@mui/icons-material/Person';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { fetchAnalyticsData } from '../../api/apiService';
+import { useAuth } from '../../context/AuthProvider';
 
 const Analytics = () => {
     const [analyticsData, setAnalyticsData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const { username } = useAuth();
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -48,7 +49,17 @@ const Analytics = () => {
     return (
         <Box sx={{ p: 3, mt: -4 }}>
             <Typography variant="h4" gutterBottom>Admin Analytics Dashboard</Typography>
-
+            <Typography
+                variant="h6"
+                gutterBottom
+                sx={{
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    mb: 2,
+                }}
+            >
+                Welcome, {username}!
+            </Typography>
             {/* Metrics Overview */}
             <Grid container spacing={3} sx={{ mb: 4 }}>
                 <Grid item xs={12} sm={4}>

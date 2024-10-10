@@ -17,7 +17,7 @@ import {
   TableSortLabel,
 } from '@mui/material';
 import { fetchAllApplications, updateApplicationStatus } from '../../api/apiService';
-import { useAuthToken } from '../../context/AuthProvider';
+import { useAuthToken, useAuth } from '../../context/AuthProvider';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
@@ -30,6 +30,7 @@ const AdminPanel = () => {
   const [sortConfig, setSortConfig] = useState({ key: 'submitted_by', direction: 'asc' }); // Sorting config state
 
   const token = useAuthToken();
+  const { username } = useAuth();
 
   // Fetch all applications on component mount
   useEffect(() => {
@@ -129,6 +130,17 @@ const AdminPanel = () => {
     >
       <Typography variant="h3" sx={{ mb: 4, fontWeight: 'bold' }}>
         Admin Panel
+      </Typography>
+      <Typography
+        variant="h6"
+        gutterBottom
+        sx={{
+          fontWeight: 'bold',
+          textAlign: 'center',
+          mb: 2,
+        }}
+      >
+        Welcome, {username}!
       </Typography>
       {error && (
         <Typography color="error" sx={{ mb: 2 }}>

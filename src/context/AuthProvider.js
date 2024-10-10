@@ -1,3 +1,4 @@
+// src/context/AuthProvider.js
 import React, { createContext, useReducer, useContext } from 'react';
 import { authReducer, initialState } from './authReducer';
 
@@ -16,6 +17,12 @@ export const AuthProvider = ({ children }) => {
 
 // Custom hook to get the token from the context
 export const useAuthToken = () => {
-  const { state } = useContext(AuthContext); // Access token from AuthContext
+  const { state } = useContext(AuthContext); 
   return state?.token;
+};
+
+// Custom hook to get the username from the context
+export const useAuth = () => {
+  const { state } = useContext(AuthContext);
+  return state;
 };
