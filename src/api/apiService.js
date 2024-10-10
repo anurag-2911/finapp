@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // Base URL from environment or fallback to localhost
-const baseURL = "https://beta.appsxyzabc.com" ;
-
+// const baseURL = "https://beta.appsxyzabc.com" ; for green development
+const baseURL = "https://appsxyzabc.com" ; // for blue dev : todo: pass from environment
 // Create Axios instances for different services
 const authApi = axios.create({ baseURL });
 const financeApi = axios.create({ baseURL });
