@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, Card, CardContent, Button } from '@mui/material';
 import { fetchUserApplications, fetchFinancingOptions } from '../../api/apiService'; // Import both API services
-import { useAuthToken } from '../../context/AuthProvider'; // Import to get the current user's token
+import { useAuthToken,useAuth } from '../../context/AuthProvider'; // Import to get the current user's token
 
 const Dashboard = () => {
   const [applications, setApplications] = useState([]); // Store user applications
@@ -11,7 +11,7 @@ const Dashboard = () => {
 
   // Get the current user's token (this assumes you have a token-based authentication)
   const token = useAuthToken();
-
+  const { username } = useAuth();
   useEffect(() => {
     const loadDashboardData = async () => {
       try {
@@ -92,6 +92,9 @@ const Dashboard = () => {
 
   return (
     <Box sx={{ p: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        Welcome, {username}! {/* Display the username */}
+      </Typography>
       <Typography variant="h4" gutterBottom>
         Your Finance Applications
       </Typography>

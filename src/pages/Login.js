@@ -2,35 +2,34 @@ import React, { useState, useContext } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api/apiService';
-import { AuthContext } from '../context/AuthProvider'; // Import AuthContext
+import { AuthContext } from '../context/AuthProvider';
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('');  
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { dispatch } = useContext(AuthContext); // Access dispatch from AuthContext
+  const { dispatch } = useContext(AuthContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await login(username, password);
-      const { access_token, role } = response.data;
+      const { access_token, role } = response.data;  
+
       localStorage.setItem('token', access_token);
-      // Dispatch the login success action
+
+      
       dispatch({
         type: 'LOGIN_SUCCESS',
-        payload: { token: access_token, role }
+        payload: { token: access_token, role, username }  
       });
 
-      console.log("Login successful, token and role set:", access_token, role); // Debugging
-
       setError(null);
-      // Navigate based on role
       if (role === 'admin') {
-        navigate('/admin-panel'); // Navigate to AdminPanel if user is admin
+        navigate('/admin-panel');
       } else {
-        navigate('/dashboard'); // Navigate to Dashboard for normal users
+        navigate('/dashboard');
       }
     } catch (err) {
       console.error('Login error:', err);
@@ -49,7 +48,7 @@ function Login() {
           label="Username"
           variant="outlined"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}  
           sx={{ mb: 2, width: '100%' }}
         />
         <TextField
@@ -57,7 +56,7 @@ function Login() {
           type="password"
           variant="outlined"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}  
           sx={{ mb: 2, width: '100%' }}
         />
         <Button type="submit" variant="contained" color="primary" sx={{ width: '100%' }}>
