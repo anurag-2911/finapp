@@ -29,11 +29,11 @@ jobs:
         with:
           context: ./  # Path to your Dockerfile and context
           push: true
-          tags: anurag2911/finapp:latest  # Replace with your DockerHub ID and image name
+          tags: anurag2911/finappbeta:latest  
 
       # Pull the image to verify that it was successfully pushed to Docker Hub
       - name: Pull Docker image from Docker Hub
-        run: docker pull anurag2911/finapp:latest
+        run: docker pull anurag2911/finappbeta:latest
 
       # list Docker images to ensure it's available
       - name: List Docker images
