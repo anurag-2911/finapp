@@ -131,7 +131,15 @@ const AdminPanel = () => {
       <Typography variant="h3" sx={{ mb: 4, fontWeight: 'bold' }}>
         Admin Panel
       </Typography>
-      <Typography variant="h5">
+      <Typography
+        variant="h6"
+        gutterBottom
+        sx={{
+          fontWeight: 'bold',
+          textAlign: 'center',
+          mb: 2,
+        }}
+      >
         Welcome, {username}!
       </Typography>
       {error && (
