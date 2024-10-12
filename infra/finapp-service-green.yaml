@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: finappbeta-ui
+  name: finappgreen-ui
   labels:
-    app: finappbeta
+    app: finappgreen
 spec:
   replicas: 1  
   selector:
     matchLabels:
-      app: finappbeta
+      app: finappgreen
   template:
     metadata:
       labels:
-        app: finappbeta
+        app: finappgreen
     spec:
       containers:
-        - name: finappbeta-container
-          image: anurag2911/finappbeta:latest
+        - name: finappgreen-container
+          image: anurag2911/finappgreen:latest
           imagePullPolicy: Always  
           ports:
             - containerPort: 80  
@@ -29,16 +29,16 @@ spec:
               cpu: "250m"
           env:             
             - name: REACT_APP_BACKEND_URL
-              value: "http://beta.appsxyzabc.com" 
+              value: "http://green.appsxyzabc.com" 
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: finappbeta-service
+  name: finappgreen-service
 spec:
   selector:
-    app: finappbeta
+    app: finappgreen
   ports:
     - protocol: TCP
       port: 80  # Exposing the port used by the container
