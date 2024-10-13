@@ -1,35 +1,11 @@
 import React from 'react';
 import { Box, Typography, Grid, Card, CardContent, CardMedia, Button } from '@mui/material';
+import loanOptions from '../data/loanOptions';  
 
 const Home = () => {
-  // Data for loan options
-  const loanOptions = [
-    {
-      title: 'Home Loans',
-      description: 'Get the best deals on home loans with low interest rates.',
-      image: '/images/homeloan.jpg',
-    },
-    {
-      title: 'Car Loans',
-      description: 'Drive your dream car with affordable car loans.',
-      image: '/images/carloan.jpg',
-    },
-    {
-      title: 'Education Loans',
-      description: 'Secure your future with low-interest education loans.',
-      image: '/images/educationloan.jpg',
-    },
-    {
-      title: 'Personal Loans',
-      description: 'Personal loans for all your needs with flexible repayment options.',
-      image: '/images/personalloan.jpg',
-    },
-
-  ];
-
   return (
-    <Box sx={{ p: 4, textAlign: 'center' }}>
-      {/* Header Section */}
+    <Box sx={{ p: 1, textAlign: 'center' }}>
+
       <Typography variant="h3" gutterBottom>
         Welcome to Our Finance Application
       </Typography>
