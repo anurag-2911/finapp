@@ -21,24 +21,24 @@ import { useAuthToken, useAuth } from '../../context/AuthProvider';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import useStyles from './adminPanelStyles';
 
 const AdminPanel = () => {
-  const [applications, setApplications] = useState([]); // Store all applications
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
-  const [statusUpdate, setStatusUpdate] = useState({}); // Track status updates for each application
-  const [sortConfig, setSortConfig] = useState({ key: 'submitted_by', direction: 'asc' }); // Sorting config state
+  const classes = useStyles();
+  const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [statusUpdate, setStatusUpdate] = useState({});
+  const [sortConfig, setSortConfig] = useState({ key: 'submitted_by', direction: 'asc' });
 
   const token = useAuthToken();
   const { username } = useAuth();
 
-  // Fetch all applications on component mount
   useEffect(() => {
     const loadApplications = async () => {
       try {
         const response = await fetchAllApplications(token);
         const { data } = response;
-
         setApplications(Array.isArray(data) ? data : []);
         setLoading(false);
       } catch (err) {
@@ -50,7 +50,6 @@ const AdminPanel = () => {
     loadApplications();
   }, [token]);
 
-  // Handle status update change
   const handleStatusChange = (appId, newStatus) => {
     setStatusUpdate((prevState) => ({
       ...prevState,
@@ -58,7 +57,6 @@ const AdminPanel = () => {
     }));
   };
 
-  // Submit the status update
   const handleUpdateStatus = async (appId) => {
     const newStatus = statusUpdate[appId];
     try {
@@ -74,34 +72,28 @@ const AdminPanel = () => {
     }
   };
 
-  // Helper function for status icons
   const getStatusIcon = (status) => {
     if (status === 'approved') return <CheckCircleIcon color="success" />;
     if (status === 'denied') return <ErrorIcon color="error" />;
     return <PendingActionsIcon color="warning" />;
   };
 
-  // Sorting handler
   const handleSort = (column) => {
     const isAsc = sortConfig.key === column && sortConfig.direction === 'asc';
     setSortConfig({ key: column, direction: isAsc ? 'desc' : 'asc' });
   };
 
-  // Sorting applications based on selected column and direction
   const sortedApplications = applications.slice().sort((a, b) => {
     const direction = sortConfig.direction === 'asc' ? 1 : -1;
 
-    // Numeric sorting for the 'amount' field
     if (sortConfig.key === 'amount') {
       return (a.amount - b.amount) * direction;
     }
 
-    // Status sorting (ensure consistent comparison for strings)
     if (sortConfig.key === 'status') {
       return a.status.localeCompare(b.status) * direction;
     }
 
-    // Default: Sorting by string for 'submitted_by' or other fields
     if (a[sortConfig.key] < b[sortConfig.key]) {
       return -1 * direction;
     }
@@ -120,26 +112,11 @@ const AdminPanel = () => {
   }
 
   return (
-    <Box
-      sx={{
-        p: 4,
-        mt: -4,
-        height: '80vh',  // Adjust the height so it takes up most of the viewport
-        overflow: 'auto', // Enable scrolling for both axes
-      }}
-    >
-      <Typography variant="h3" sx={{ mb: 4, fontWeight: 'bold' }}>
+    <Box className={classes.adminContainer}>
+      <Typography variant="h3" className={classes.adminTitle}>
         Admin Panel
       </Typography>
-      <Typography
-        variant="h6"
-        gutterBottom
-        sx={{
-          fontWeight: 'bold',
-          textAlign: 'center',
-          mb: 2,
-        }}
-      >
+      <Typography variant="h6" className={classes.welcomeText}>
         Welcome, {username}!
       </Typography>
       {error && (
@@ -148,15 +125,7 @@ const AdminPanel = () => {
         </Typography>
       )}
       {applications.length > 0 ? (
-        <TableContainer
-          component={Paper}
-          sx={{
-            borderRadius: 4,
-            boxShadow: 3,
-            maxHeight: '60vh', // Limits the height of the table, enabling vertical scroll
-            maxWidth: '100%',  // Ensures it doesn't overflow horizontally
-          }}
-        >
+        <TableContainer component={Paper} className={classes.tableContainer}>
           <Table stickyHeader sx={{ minWidth: 700 }}>
             <TableHead>
               <TableRow>
@@ -192,15 +161,9 @@ const AdminPanel = () => {
             </TableHead>
             <TableBody>
               {sortedApplications.map((app) => (
-                <TableRow
-                  key={app._id}
-                  sx={{
-                    '&:last-child td, &:last-child th': { border: 0 },
-                    '&:hover': { backgroundColor: '#f5f5f5' },
-                  }}
-                >
+                <TableRow key={app._id} className={classes.tableRow}>
                   <TableCell>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant="body1" className={classes.userCell}>
                       {app.submitted_by}
                     </Typography>
                   </TableCell>
@@ -209,7 +172,7 @@ const AdminPanel = () => {
                   </TableCell>
                   <TableCell>
                     {getStatusIcon(app.status)}{' '}
-                    <Typography variant="body1" display="inline" sx={{ ml: 1 }}>
+                    <Typography variant="body1" className={classes.statusCell}>
                       {app.status}
                     </Typography>
                   </TableCell>
@@ -231,7 +194,7 @@ const AdminPanel = () => {
                           variant="contained"
                           color="primary"
                           onClick={() => handleUpdateStatus(app._id)}
-                          sx={{ borderRadius: 2 }}
+                          className={classes.updateButton}
                         >
                           Update
                         </Button>
