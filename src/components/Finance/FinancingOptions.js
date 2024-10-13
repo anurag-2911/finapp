@@ -32,11 +32,12 @@ const FinancingOptions = () => {
   };
 
   return (
-    <Box 
+    <Box
       sx={{
-        p: 3, 
-        height: '100vh', 
-        overflow: 'auto'  // enables scroll if content overflows
+        p: 3,
+        height: '100vh',  
+        overflowY: 'auto', 
+        overflowX: 'auto'  
       }}
     >
       <Typography
