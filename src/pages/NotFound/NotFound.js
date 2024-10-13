@@ -1,9 +1,12 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
+import useStyles from './notFoundStyles';  
 
 function NotFound() {
+  const classes = useStyles();  
+
   return (
-    <Box sx={{ p: 3, textAlign: 'center' }}>
+    <Box className={classes.notFoundContainer}>
       <Typography variant="h3" gutterBottom>
         404 - Page Not Found
       </Typography>
