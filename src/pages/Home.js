@@ -4,7 +4,7 @@ import loanOptions from '../data/loanOptions';
 
 const Home = () => {
   return (
-    <Box sx={{ p: 1, textAlign: 'center' }}>
+    <Box sx={{ p: 0,mt:2, textAlign: 'center' }}>
 
       <Typography variant="h3" gutterBottom>
         Welcome to Our Finance Application
@@ -41,7 +41,7 @@ const Home = () => {
       </Grid>
 
       {/* Benefits of Loans Section */}
-      <Box sx={{ mt: 6 }}>
+      <Box sx={{ mt: 4 }}>
         <Typography variant="h4" gutterBottom>
           Why Take a Loan with Us?
         </Typography>
