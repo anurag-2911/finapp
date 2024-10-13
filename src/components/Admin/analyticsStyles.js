@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
     },
     tableContainer: {
-        maxHeight: 100,  
+        maxHeight: 130,  
         overflowY: 'auto',  
         marginBottom: theme.spacing(4),  
     },
