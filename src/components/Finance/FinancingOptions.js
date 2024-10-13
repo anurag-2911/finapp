@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography, Card, CardContent, Grid, Checkbox, FormControlLabel } from '@mui/material';
 import { fetchFinancingOptions } from '../../api/apiService';
 import { useAuth } from '../../context/AuthProvider';
+import useStyles from './financingOptionsStyles';  
 
 const FinancingOptions = () => {
+  const classes = useStyles();  
   const [options, setOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [error, setError] = useState(null);
   const { username } = useAuth();
+
   useEffect(() => {
     const loadOptions = async () => {
       try {
@@ -32,16 +35,8 @@ const FinancingOptions = () => {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography
-        variant="h6"
-        gutterBottom
-        sx={{
-          fontWeight: 'bold',
-          textAlign: 'center',
-          mb: 2,
-        }}
-      >
+    <Box className={classes.container}>
+      <Typography variant="h6" className={classes.welcomeText}>
         Welcome, {username}!
       </Typography>
       <Typography variant="h4" gutterBottom>
@@ -52,7 +47,7 @@ const FinancingOptions = () => {
       <Grid container spacing={2}>
         {options.map((option) => (
           <Grid item xs={12} sm={6} md={4} key={option._id}>
-            <Card sx={{ position: 'relative' }}>
+            <Card className={classes.optionCard}>
               <CardContent>
                 <FormControlLabel
                   control={
@@ -62,14 +57,18 @@ const FinancingOptions = () => {
                     />
                   }
                   label=""
-                  sx={{ position: 'absolute', top: 8, right: 8 }}
+                  className={classes.checkboxControl}
                 />
-                <Typography variant="h5">{option.option_name}</Typography>
+                <Typography variant="h5" className={classes.optionTitle}>
+                  {option.option_name}
+                </Typography>
                 <Typography variant="body2">{option.description}</Typography>
-                <Typography variant="body2">Interest Rate: {option.interest_rate}%</Typography>
+                <Typography variant="body2" className={classes.optionDetails}>
+                  Interest Rate: {option.interest_rate}%
+                </Typography>
                 <Typography variant="body2">Duration: {option.duration_months} months</Typography>
                 <Typography variant="body2">Max Amount: ${option.max_amount}</Typography>
-                <Typography variant="body2">
+                <Typography variant="body2" className={classes.optionDetails}>
                   Eligibility: Min Income ${option.eligibility_criteria.min_income}, Credit Score {option.eligibility_criteria.credit_score}
                 </Typography>
               </CardContent>

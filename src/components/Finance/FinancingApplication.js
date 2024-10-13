@@ -3,19 +3,21 @@ import { Box, Typography, Grid, Checkbox, FormControlLabel, Button, TextField } 
 import { fetchFinancingOptions, applyForFinance } from '../../api/apiService';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthProvider';
+import useStyles from './financingApplicationStyles';
 
 const FinancingApplication = () => {
-  const [options, setOptions] = useState([]); // Available financing options
-  const [selectedOptions, setSelectedOptions] = useState([]); // Selected financing options
-  const [totalMaxAmount, setTotalMaxAmount] = useState(0); // Total amount of selected options
-  const [neededAmount, setNeededAmount] = useState(''); // User input for needed amount
-  const [purpose, setPurpose] = useState(''); // User input for the purpose
-  const [error, setError] = useState(null); // Error handling state
-  const [success, setSuccess] = useState(false); // Success message state
+  const classes = useStyles();
+  const [options, setOptions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [totalMaxAmount, setTotalMaxAmount] = useState(0);
+  const [neededAmount, setNeededAmount] = useState('');
+  const [purpose, setPurpose] = useState('');
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
   const { username } = useAuth();
-  // Load financing options from backend on component mount
+
   useEffect(() => {
     const loadOptions = async () => {
       try {
@@ -32,7 +34,6 @@ const FinancingApplication = () => {
     loadOptions();
   }, []);
 
-  // Handle selection of a financing option
   const handleSelect = (optionId) => {
     const updatedSelections = selectedOptions.includes(optionId)
       ? selectedOptions.filter(id => id !== optionId)
@@ -42,7 +43,6 @@ const FinancingApplication = () => {
     calculateTotalMaxAmount(updatedSelections, options);
   };
 
-  // Calculate the total max amount of selected financing options
   const calculateTotalMaxAmount = (selectedIds, allOptions) => {
     const total = selectedIds.reduce((sum, id) => {
       const option = allOptions.find(opt => opt._id === id);
@@ -51,16 +51,13 @@ const FinancingApplication = () => {
     setTotalMaxAmount(total);
   };
 
-  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await applyForFinance(selectedOptions, neededAmount, purpose); // Use API service to submit
+      await applyForFinance(selectedOptions, neededAmount, purpose);
       console.log('Financing application submitted successfully');
-      setSuccess(true); // Show success message
-      setError(null); // Clear any previous errors
-
-      // Navigate to dashboard after 5 seconds
+      setSuccess(true);
+      setError(null);
       setTimeout(() => {
         navigate('/dashboard');
       }, 5000);
@@ -71,21 +68,13 @@ const FinancingApplication = () => {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography
-        variant="h6"
-        gutterBottom
-        sx={{
-          fontWeight: 'bold',
-          textAlign: 'center',
-          mb: 2,
-        }}
-      >
+    <Box className={classes.container}>
+      <Typography variant="h6" className={classes.welcomeText}>
         Welcome, {username}!
       </Typography>
       <Typography variant="h5">Apply for Financing</Typography>
       {error && <Typography color="error">{error}</Typography>}
-      {success && <Typography color="primary">Application submitted successfully! Redirecting to dashboard...</Typography>}
+      {success && <Typography className={classes.successMessage}>Application submitted successfully! Redirecting to dashboard...</Typography>}
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
           {options.map((option) => (
@@ -98,11 +87,12 @@ const FinancingApplication = () => {
                   />
                 }
                 label={option.option_name}
+                className={classes.checkboxLabel}
               />
             </Grid>
           ))}
         </Grid>
-        <Typography variant="h6" sx={{ mt: 2 }}>
+        <Typography variant="h6" className={classes.totalMaxAmount}>
           Total Max Amount: ${totalMaxAmount}
         </Typography>
         <TextField
@@ -112,7 +102,7 @@ const FinancingApplication = () => {
           label="Needed Amount"
           value={neededAmount}
           onChange={(e) => setNeededAmount(e.target.value)}
-          margin="normal"
+          className={classes.textField}
         />
         <TextField
           fullWidth
@@ -121,9 +111,15 @@ const FinancingApplication = () => {
           label="Purpose"
           value={purpose}
           onChange={(e) => setPurpose(e.target.value)}
-          margin="normal"
+          className={classes.textField}
         />
-        <Button color="primary" variant="contained" type="submit" sx={{ mt: 2 }} disabled={success}>
+        <Button
+          color="primary"
+          variant="contained"
+          type="submit"
+          className={classes.submitButton}
+          disabled={success}
+        >
           Submit Application
         </Button>
       </form>

@@ -13,25 +13,25 @@ import {
     TableHead,
     TableRow,
     Paper,
-    List,
-    ListItem,
-    ListItemText,
 } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 import LoginIcon from '@mui/icons-material/Person';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { fetchAnalyticsData } from '../../api/apiService';
 import { useAuth } from '../../context/AuthProvider';
+import useStyles from './analyticsStyles';
 
 const Analytics = () => {
+    const classes = useStyles();
     const [analyticsData, setAnalyticsData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { username } = useAuth();
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await fetchAnalyticsData(); // Call the API to fetch analytics data
+                const data = await fetchAnalyticsData();
                 setAnalyticsData(data);
                 setLoading(false);
             } catch (err) {
@@ -47,27 +47,20 @@ const Analytics = () => {
     if (error) return <Typography color="error">{error}</Typography>;
 
     return (
-        <Box sx={{ p: 3, mt: -4 }}>
+        <Box className={classes.analyticsContainer}>
             <Typography variant="h4" gutterBottom>Admin Analytics Dashboard</Typography>
-            <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    mb: 2,
-                }}
-            >
+            <Typography variant="h6" className={classes.welcomeText}>
                 Welcome, {username}!
             </Typography>
+
             {/* Metrics Overview */}
             <Grid container spacing={3} sx={{ mb: 4 }}>
                 <Grid item xs={12} sm={4}>
-                    <Card sx={{ boxShadow: 3 }}>
+                    <Card className={classes.metricsCard}>
                         <CardContent>
                             <Grid container alignItems="center">
                                 <Grid item>
-                                    <EventIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />
+                                    <EventIcon color="primary" className={classes.iconContainer} />
                                 </Grid>
                                 <Grid item>
                                     <Typography variant="h6">Total Events</Typography>
@@ -79,11 +72,11 @@ const Analytics = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={4}>
-                    <Card sx={{ boxShadow: 3 }}>
+                    <Card className={classes.metricsCard}>
                         <CardContent>
                             <Grid container alignItems="center">
                                 <Grid item>
-                                    <LoginIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />
+                                    <LoginIcon color="primary" className={classes.iconContainer} />
                                 </Grid>
                                 <Grid item>
                                     <Typography variant="h6">Total Logins</Typography>
@@ -95,11 +88,11 @@ const Analytics = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={4}>
-                    <Card sx={{ boxShadow: 3 }}>
+                    <Card className={classes.metricsCard}>
                         <CardContent>
                             <Grid container alignItems="center">
                                 <Grid item>
-                                    <AttachMoneyIcon color="primary" sx={{ fontSize: 40, mr: 2 }} />
+                                    <AttachMoneyIcon color="primary" className={classes.iconContainer} />
                                 </Grid>
                                 <Grid item>
                                     <Typography variant="h6">Financing Checks</Typography>
@@ -113,7 +106,7 @@ const Analytics = () => {
 
             {/* Logins per User Table */}
             <Typography variant="h5" gutterBottom>Logins Per User</Typography>
-            <TableContainer component={Paper} sx={{ maxHeight: 400, overflow: 'auto' }}>
+            <TableContainer component={Paper} className={classes.tableContainer}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -133,7 +126,6 @@ const Analytics = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-
         </Box>
     );
 };

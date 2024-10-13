@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Push Blue Deployment
 
 on:
   workflow_dispatch:  # To trigger the workflow manually from the GitHub Actions UI
