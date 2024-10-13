@@ -107,7 +107,7 @@ const Analytics = () => {
             {/* Logins per User Table */}
             <Typography variant="h5" gutterBottom>Logins Per User</Typography>
             <TableContainer component={Paper} className={classes.tableContainer}>
-                <Table stickyHeader aria-label="sticky table">
+                <Table stickyHeader aria-label="logins table">
                     <TableHead>
                         <TableRow>
                             <TableCell>User</TableCell>
@@ -121,6 +121,29 @@ const Analytics = () => {
                                     {user}
                                 </TableCell>
                                 <TableCell align="right">{analyticsData.logins_per_user[user]}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            {/* Financing Checks per User Table */}
+            <Typography variant="h5" gutterBottom>Financing Checks Per User</Typography>
+            <TableContainer component={Paper} className={classes.tableContainer}>
+                <Table stickyHeader aria-label="financing checks table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>User</TableCell>
+                            <TableCell align="right">Financing Checks</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {Object.keys(analyticsData.financing_checks_per_user).map((user) => (
+                            <TableRow key={user}>
+                                <TableCell component="th" scope="row">
+                                    {user}
+                                </TableCell>
+                                <TableCell align="right">{analyticsData.financing_checks_per_user[user]}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

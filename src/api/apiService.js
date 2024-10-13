@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL from environment or fallback to localhost
-// const baseURL = "https://green.appsxyzabc.com" ; //for green development
+// const baseURL = "https://green.appsxyzabc.com"; //for green development
 const baseURL = "https://appsxyzabc.com"; // for blue dev : todo: pass from environment, issue with browser cache
 // Create Axios instances for different services
 const authApi = axios.create({ baseURL });
@@ -111,5 +111,17 @@ export const fetchAnalyticsData = async () => {
     throw error;
   }
 };
+
+export const logFinancingOptionsVisit = async () => {
+  try {
+    console.log("Attempting to log financing options visit");  // Debug log
+    await financeApi.post('/log-financing-options-visit');
+    console.log("Logged financing options visit successfully");  // Success log
+  } catch (error) {
+    console.error("Error logging financing options visit:", error);
+  }
+};
+
+
 
 

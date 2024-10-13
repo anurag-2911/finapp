@@ -4,6 +4,8 @@ const useStyles = makeStyles((theme) => ({
     analyticsContainer: {
         padding: theme.spacing(3),
         marginTop: theme.spacing(-4),
+        maxHeight: '100vh', 
+        overflow: 'hidden', 
     },
     welcomeText: {
         fontWeight: 'bold',
@@ -18,8 +20,9 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
     },
     tableContainer: {
-        maxHeight: 400,
-        overflow: 'auto',
+        maxHeight: 130,  
+        overflowY: 'auto',  
+        marginBottom: theme.spacing(4),  
     },
 }));
 

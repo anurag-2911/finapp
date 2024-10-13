@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Card, CardContent, Grid, Checkbox, FormControlLabel } from '@mui/material';
-import { fetchFinancingOptions } from '../../api/apiService';
+import { fetchFinancingOptions, logFinancingOptionsVisit } from '../../api/apiService';
 import { useAuth } from '../../context/AuthProvider';
-import useStyles from './financingOptionsStyles';  
+import useStyles from './financingOptionsStyles';
 
 const FinancingOptions = () => {
-  const classes = useStyles();  
+  const classes = useStyles();
   const [options, setOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [error, setError] = useState(null);
@@ -18,6 +18,14 @@ const FinancingOptions = () => {
         setOptions(data);
         const savedSelections = JSON.parse(localStorage.getItem('selectedOptions')) || [];
         setSelectedOptions(savedSelections);
+        try {
+          // Log that the user visited this page
+          console.log('logging financing visit option');
+          await logFinancingOptionsVisit();
+        } catch (error) {
+          setError(error);
+        }
+
       } catch (err) {
         setError("Failed to load financing options");
       }
