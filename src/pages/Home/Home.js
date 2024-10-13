@@ -1,11 +1,13 @@
 import React from 'react';
 import { Box, Typography, Grid, Card, CardContent, CardMedia, Button } from '@mui/material';
-import loanOptions from '../data/loanOptions';  
+import loanOptions from '../../data/loanOptions';  
+import useStyles from './homeStyles';  
 
 const Home = () => {
-  return (
-    <Box sx={{ p: 0,mt:2, textAlign: 'center' }}>
+  const classes = useStyles();  
 
+  return (
+    <Box className={classes.container}>
       <Typography variant="h3" gutterBottom>
         Welcome to Our Finance Application
       </Typography>
@@ -17,7 +19,7 @@ const Home = () => {
       <Grid container spacing={4}>
         {loanOptions.map((option, index) => (
           <Grid item xs={12} md={6} lg={3} key={index}>
-            <Card sx={{ maxWidth: 345 }}>
+            <Card className={classes.loanCard}>
               <CardMedia
                 component="img"
                 alt={option.title}
@@ -32,7 +34,7 @@ const Home = () => {
                   {option.description}
                 </Typography>
               </CardContent>
-              <Button variant="contained" color="primary" sx={{ m: 2 }}>
+              <Button variant="contained" color="primary" className={classes.loanButton}>
                 Learn More
               </Button>
             </Card>
@@ -41,7 +43,7 @@ const Home = () => {
       </Grid>
 
       {/* Benefits of Loans Section */}
-      <Box sx={{ mt: 4 }}>
+      <Box className={classes.benefitsSection}>
         <Typography variant="h4" gutterBottom>
           Why Take a Loan with Us?
         </Typography>
