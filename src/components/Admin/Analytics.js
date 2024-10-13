@@ -106,7 +106,7 @@ const Analytics = () => {
 
             {/* Logins per User Table */}
             <Typography variant="h5" gutterBottom>Logins Per User</Typography>
-            <TableContainer component={Paper} className={classes.scrollableTable}>
+            <TableContainer component={Paper} className={classes.tableContainer}>
                 <Table stickyHeader aria-label="logins table">
                     <TableHead>
                         <TableRow>
@@ -129,7 +129,7 @@ const Analytics = () => {
 
             {/* Financing Checks per User Table */}
             <Typography variant="h5" gutterBottom>Financing Checks Per User</Typography>
-            <TableContainer component={Paper} className={classes.scrollableTable}>
+            <TableContainer component={Paper} className={classes.tableContainer}>
                 <Table stickyHeader aria-label="financing checks table">
                     <TableHead>
                         <TableRow>
