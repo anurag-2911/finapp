@@ -32,7 +32,13 @@ const FinancingOptions = () => {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box 
+      sx={{
+        p: 3, 
+        height: '100vh', 
+        overflow: 'auto'  // enables scroll if content overflows
+      }}
+    >
       <Typography
         variant="h6"
         gutterBottom
