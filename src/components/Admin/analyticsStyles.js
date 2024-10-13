@@ -18,8 +18,9 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(2),
     },
     tableContainer: {
-        maxHeight: 400,
-        overflow: 'auto',
+        maxHeight: 150,  
+        overflowY: 'auto',  
+        marginBottom: theme.spacing(4),  
     },
 }));
 
