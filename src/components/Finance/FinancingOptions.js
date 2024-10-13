@@ -20,6 +20,7 @@ const FinancingOptions = () => {
         setSelectedOptions(savedSelections);
         try {
           // Log that the user visited this page
+          console.log('logging financing visit option');
           await logFinancingOptionsVisit();
         } catch (error) {
           setError(error);

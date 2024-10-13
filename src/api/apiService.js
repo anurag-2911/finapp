@@ -114,11 +114,14 @@ export const fetchAnalyticsData = async () => {
 
 export const logFinancingOptionsVisit = async () => {
   try {
+    console.log("Attempting to log financing options visit");  // Debug log
     await financeApi.post('/log-financing-options-visit');
+    console.log("Logged financing options visit successfully");  // Success log
   } catch (error) {
     console.error("Error logging financing options visit:", error);
   }
 };
+
 
 
 
