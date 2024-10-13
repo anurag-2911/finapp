@@ -34,7 +34,7 @@ const FinancingOptions = () => {
   return (
     <Box
       sx={{
-        p: 3,
+        p: 1,
         height: '100vh',  
         overflowY: 'auto', 
         overflowX: 'auto'  
@@ -46,7 +46,7 @@ const FinancingOptions = () => {
         sx={{
           fontWeight: 'bold',
           textAlign: 'center',
-          mb: 2,
+          mb: 1,
         }}
       >
         Welcome, {username}!
