@@ -52,7 +52,7 @@ export const fetchFinancingOptions = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching financing options:", error);
-    throw error;
+    throw error; 
   }
 };
 
